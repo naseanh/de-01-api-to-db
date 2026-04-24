@@ -17,7 +17,9 @@ CREATE TABLE IF NOT EXISTS weather_observations (
     latitude DOUBLE PRECISION NOT NULL, -- Geographic latitude coordinate
     longitude DOUBLE PRECISION NOT NULL, -- Geographic longitude coordinate
     temperature_c DOUBLE PRECISION NOT NULL, -- Temperature in Celsius
+    temperature_f DOUBLE PRECISION NOT NULL, -- Temperature in Fahrenheit
     wind_speed_kmh DOUBLE PRECISION NOT NULL, -- Wind speed in kilometers per hour
+    wind_speed_mph DOUBLE PRECISION NOT NULL, -- Wind speed in miles per hour
     observed_at TIMESTAMPTZ NOT NULL, -- Timestamp when the observation was recorded (source time)
     ingested_at TIMESTAMPTZ DEFAULT NOW(), -- Timestamp when the record was inserted into DB
     CONSTRAINT unique_observation UNIQUE (location, observed_at) -- Prevent duplicate observations
@@ -29,3 +31,7 @@ CREATE TABLE IF NOT EXISTS weather_observations (
 --   (common pattern for dashboards and APIs)
 CREATE INDEX IF NOT EXISTS idx_weather_location_time
 ON weather_observations (location, observed_at DESC);
+
+ALTER TABLE weather_observations
+ADD COLUMN temperature_f DOUBLE PRECISION,
+ADD COLUMN wind_speed_mph DOUBLE PRECISION;
