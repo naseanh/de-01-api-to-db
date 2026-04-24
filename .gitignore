@@ -208,6 +208,14 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+out/
+# IntelliJ-specific caches
+.idea_modules/
+
 # miscellaneous
 *.log
 scratch/
