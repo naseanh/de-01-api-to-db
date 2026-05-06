@@ -90,6 +90,7 @@ See [queries](sql/queries.sql) for:
 - [Setup Guide](docs/setup.md)
 - [Data Model](docs/data-model.md)
 - [Troubleshooting](docs/troubleshooting.md)
+- [Retrospective](docs/phase-1-retrospective.md)
 
 ## Example Output
 
