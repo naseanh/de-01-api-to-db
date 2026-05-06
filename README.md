@@ -99,4 +99,5 @@ Pipeline complete. Location: Augusta, GA | Temp: 22.6C / 72.7F | Wind: 15.2 km/h
 
 ## Next Steps (Phase 2)
 
-In progress...
+- Error and retry logic
+- SQL patterns

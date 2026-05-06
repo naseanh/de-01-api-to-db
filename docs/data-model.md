@@ -184,7 +184,7 @@ FROM weather_observations
 GROUP BY location;
 ```
 
-## Future Enhancements (Phase 2+)
+## Possible Future Enhancements
 
 - Separate locations into a dimention table
 - Add historical weather storage (hour/daily)

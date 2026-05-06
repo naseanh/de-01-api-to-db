@@ -1,4 +1,3 @@
-######CODE_CHANGE#######
 """
 pipeline.py — Phase 1: Basic API-to-PostgreSQL ETL Pipeline
 
@@ -43,6 +42,9 @@ DB_CONFIG = {
     "dbname": os.getenv("DB_NAME", "pipeline_db"),
     "user": os.getenv("DB_USER", "pipeline_user"),
     "password": os.getenv("DB_PASSWORD"),
+    # Note: If DB_PASSWORD is wrong or missing, the pipeline will fail
+    # with an authentication error when trying to connect to PostgreSQL.
+    # Expected: psycopg2.OperationalError: FATAL: password authentication failed
 }
 
 
@@ -64,6 +66,17 @@ WEATHER_LONGITUDE = os.getenv("WEATHER_LONGITUDE") or DEFAULT_LONGITUDE
 # =========================
 # API CONFIGURATION
 # =========================
+# Open-Meteo API endpoint and parameters for current weather data.
+
+# Bad URL test1:
+# API_URL = "https://api.open-meteo.com/v1/forecas"
+# Missing 't' at the end of 'forecast'
+# Will return a requests.exceptions.ConnectionError
+# Bad URL test2:
+# API_URL = "https://api.open-meteo.com/v1/forecast/notapath
+# Will return a 404 Not Found error, which raises a
+# requests.exceptions.HTTPError when .raise_for_status() is called.
+# Good URL test:
 API_URL = "https://api.open-meteo.com/v1/forecast"
 
 API_PARAMS = {
@@ -163,6 +176,12 @@ def load(record):
         with conn.cursor() as cursor:
             cursor.execute(sql, record)
 
+            # Intentionally discard transaction which will
+            # cause the data not to be saved in the database.
+            # Expected: Script runs with no error — but no data in DB.
+            # Missing commits are a silent failure.
+            # conn.rollback()
+
 
 # =========================
 # PIPELINE ORCHESTRATION
@@ -184,6 +203,7 @@ def run_pipeline():
         f'Wind: {clean["wind_speed_kmh"]:.1f} km/h / {clean["wind_speed_mph"]:.1f} mph | '
         f'Observed: {clean["observed_at"]}'
     )
+
 
 if __name__ == "__main__":
     run_pipeline()

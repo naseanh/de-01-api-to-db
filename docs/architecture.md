@@ -175,7 +175,7 @@ flowchart TD
 - No structured logging
 - No connection pooling
 
-## Future Enhancements (Phase 2+)
+## Possible Future Enhancements
 
 - Multi-location ingestion
 - Scheduled pipeline execution (cron / scheduler)
