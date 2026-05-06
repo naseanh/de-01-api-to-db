@@ -16,6 +16,17 @@ This project demonstrates foundational data engineering concepts such as:
 - Idempotent data loading
 - Environment-based configuration
 
+## Key Concepts Practiced
+
+- API integration (HTTP GET requests to external weather API)
+- Data normalization (transforming raw API responses into structured records)
+- Database persistence (storing normalized data in PostgreSQL)
+- Dockerized databases (running PostgreSQL in a containerized environment)
+- Transaction handling (understanding commits, rollbacks, and ACID principles)
+- Error handling (implementing fail-safe exception handling)
+- Environment configuration (externalizing application settings using .env variables)
+- Operational troubleshooting (diagnosing runtime, database, and environment issues)
+
 ## Tech Stack
 
 - Python
@@ -46,6 +57,34 @@ flowchart LR
     linkStyle 1 stroke:#2ca02c,stroke-width:2px
     linkStyle 2 stroke:#999999,stroke-dasharray: 5 5
     linkStyle 3 stroke:#999999,stroke-width:2px
+```
+
+## CI/CD Workflow
+
+This repository uses GitHub Actions to automatically validate code changes during development.
+
+Current workflow capabilities include:
+
+- Automatic workflow execution on push events
+- Python environment provisioning
+- Dependency installation
+- Static code analysis using pylint
+- Branch protection enforcement before merge
+
+### Workflow Overview
+
+```text
+Developer Push
+    ↓
+GitHub Actions Workflow Triggered
+    ↓
+Python Environment Provisioned
+    ↓
+Project Dependencies Installed
+    ↓
+Static Analysis Executed
+    ↓
+Branch Protection Quality Gates Applied
 ```
 
 ## Quick Start
@@ -100,5 +139,13 @@ Pipeline complete. Location: Augusta, GA | Temp: 22.6C / 72.7F | Wind: 15.2 km/h
 
 ## Next Steps (Phase 2)
 
-- Error and retry logic
-- SQL patterns
+Planned Phase 2 enhancements include:
+
+- Retry and timeout handling
+- Structured logging
+- Unit testing with pytest
+- Enhanced CI/CD workflows
+- Security scanning
+- Containerized application deployment
+- Metrics and observability
+- Kubernetes deployment exploration
