@@ -10,7 +10,17 @@ charset-normalizer==3.4.7
     # via requests
 idna==3.12
     # via requests
+iniconfig==2.3.0
+    # via pytest
+packaging==26.2
+    # via pytest
+pluggy==1.6.0
+    # via pytest
 psycopg2-binary==2.9.12
+    # via -r requirements.in
+pygments==2.20.0
+    # via pytest
+pytest==9.0.3
     # via -r requirements.in
 python-dotenv==1.2.2
     # via -r requirements.in
