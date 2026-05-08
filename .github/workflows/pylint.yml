@@ -26,7 +26,7 @@ jobs:
 
       - name: Run pylint static analysis
         run: |
-          pylint src/ tests/ utils/
+          pylint src tests utils
 
       - name: Run unit tests
         run: |
