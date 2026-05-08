@@ -4,7 +4,7 @@ Unit tests for environment-based configuration behavior.
 
 import importlib
 
-import src.pipeline as pipeline
+from src import pipeline
 
 
 def test_db_config_uses_default_host(monkeypatch):
