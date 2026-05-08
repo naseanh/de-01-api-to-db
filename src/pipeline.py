@@ -24,10 +24,17 @@ Notes:
 import os
 from datetime import datetime
 import time
+import logging
 
 import psycopg2
 import requests
 from dotenv import load_dotenv
+
+logging.basicConfig(
+    format="%(asctime)s %(levelname)s %(name)s - %(message)s",
+)
+
+logger = logging.getLogger(__name__)
 
 
 # Load environment variables from .env into the Python runtime.
@@ -125,7 +132,11 @@ def extract():
 
         if attempt < max_api_retries:
             delay = base_retry_delay_seconds * (2 ** (attempt - 1))
-            print(f"API request failed on attempt {attempt}. Retrying in {delay} seconds.")
+            logger.warning(
+                "API request failed on attempt %s. Retrying in %s seconds.",
+                attempt,
+                delay
+            )
             time.sleep(delay)
 
     raise RuntimeError(
@@ -222,18 +233,23 @@ def run_pipeline():
     """
     Run the full ETL pipeline: Extract → Transform → Load.
     """
-    print("Starting pipeline...")
+    logger.info("Starting pipeline...")
 
     raw_data = extract()
     clean = transform(raw_data)
     load(clean)
 
-    print(
-        f'Pipeline complete. '
-        f'Location: {clean["location"]} | '
-        f'Temp: {clean["temperature_c"]:.1f}C / {clean["temperature_f"]:.1f}F | '
-        f'Wind: {clean["wind_speed_kmh"]:.1f} km/h / {clean["wind_speed_mph"]:.1f} mph | '
-        f'Observed: {clean["observed_at"]}'
+    logger.info(
+        "Pipeline complete. Location: %s | "
+        "Temp: %s C / %s F | "
+        "Wind: %s km/h / %s mph | "
+        "Observed: %s",
+        clean["location"],
+        clean["temperature_c"],
+        clean["temperature_f"],
+        clean["wind_speed_kmh"],
+        clean["wind_speed_mph"],
+        clean["observed_at"],
     )
 
 
