@@ -15,13 +15,13 @@ observability, and operational resilience.
 - Replaced print statements with structured logging
 - Centralized pytest/pylint configuration using pyproject.toml
 - Expanded GitHub Actions CI validation
+- Add additional negative-path testing
+- Improve operational troubleshooting documentation
 
 ## Remaining Goals
 
 - Improve exception handling
-- Add additional negative-path testing
 - Expand SQL query examples
-- Improve operational troubleshooting documentation
 
 ## Engineering Concepts Practiced
 

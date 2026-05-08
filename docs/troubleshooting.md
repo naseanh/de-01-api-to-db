@@ -219,7 +219,7 @@ testpaths = ["tests"]
 - Ensure utility scripts do not start with test_
 - Verify required packages are installed in GitHub Actions workflow
 
-Issue: pylint duplicate-code warning
+### Issue: pylint duplicate-code warning
 
 **Cause**:
 
@@ -339,12 +339,6 @@ git push
 ```
 
 - Verify workflow syntax in .github/workflows/
-
-```bash
-# Then Commit
-
-git add docs/troubleshooting.md && git commit -m "docs: expand troubleshooting guide" && git push -u origin HEAD
-```
 
 ## Debugging Tips
 
