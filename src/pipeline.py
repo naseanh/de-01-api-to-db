@@ -23,6 +23,7 @@ Notes:
 
 import os
 from datetime import datetime
+import time
 
 import psycopg2
 import requests
@@ -92,27 +93,45 @@ API_PARAMS = {
 # =========================
 def extract():
     """
-    Extract current weather data from the Open-Meteo API.
+    Extract current weather data from the Open-Meteo API with timeout and retry handling.
 
     Returns:
         dict: Raw JSON response from the API.
+
+    Raises:
+        RuntimeError: If the API request fails after all retry attempts.
     """
-    try:
-        api_response = requests.get(
-            API_URL,
-            params=API_PARAMS,
-            timeout=10
-        )
-        api_response.raise_for_status()
-        return api_response.json()
-    except requests.exceptions.Timeout as exc:
-        raise RuntimeError(
-            f"API request timed out: {exc}."
-        ) from exc
-    except requests.exceptions.RequestException as exc:
-        raise RuntimeError(
-            f"API request failed: {exc}."
-        ) from exc
+    last_exception = None
+    max_api_retries = 3
+    base_retry_delay_seconds = 1
+
+    for attempt in range(1, max_api_retries + 1):
+        try:
+            api_response = requests.get(
+                API_URL,
+                params=API_PARAMS,
+                timeout=10,
+            )
+
+            api_response.raise_for_status()
+
+            return api_response.json()
+
+        except requests.exceptions.Timeout as exc:
+            last_exception = exc
+
+        except requests.exceptions.RequestException as exc:
+            last_exception = exc
+
+        if attempt < max_api_retries:
+            delay = base_retry_delay_seconds * (2 ** (attempt - 1))
+            print(f"API request failed on attempt {attempt}. Retrying in {delay} seconds.")
+            time.sleep(delay)
+
+    raise RuntimeError(
+        f"API request failed after {max_api_retries} attempts."
+    ) from last_exception
+
 
 
 # =========================

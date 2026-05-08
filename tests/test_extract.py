@@ -2,23 +2,29 @@
 Unit tests for API extraction behavior.
 """
 
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
-import pytest
 import requests
 
 from src.pipeline import extract
 
 
+@patch("src.pipeline.time.sleep")
 @patch("src.pipeline.requests.get")
-def test_extract_raises_runtime_error_on_timeout(mock_get):
-    """
-    Verify extract() raises RuntimeError when API request times out.
-    """
+def test_extract_retries_after_timeout(mock_get, mock_sleep):
+    """Verify extract() retries after a timeout and succeeds on a later attempt."""
 
-    mock_get.side_effect = requests.exceptions.Timeout
+    successful_response = Mock()
+    successful_response.raise_for_status.return_value = None
+    successful_response.json.return_value = {"current_weather": {}}
 
-    with pytest.raises(RuntimeError) as exc_info:
-        extract()
+    mock_get.side_effect = [
+        requests.exceptions.Timeout,
+        successful_response,
+    ]
 
-    assert "timed out" in str(exc_info.value)
+    result = extract()
+
+    assert result == {"current_weather": {}}
+    assert mock_get.call_count == 2
+    mock_sleep.assert_called_once()
