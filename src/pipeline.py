@@ -231,26 +231,67 @@ def load(record):
 # =========================
 def run_pipeline():
     """
-    Run the full ETL pipeline: Extract → Transform → Load.
+    Run the complete ETL pipeline.
+
+    Raises:
+        Exception: Re-raises any failure after logging pipeline context.
     """
-    logger.info("Starting pipeline...")
+    logger.info("Pipeline started.")
 
-    raw_data = extract()
-    clean = transform(raw_data)
-    load(clean)
+    try:
+        raw_data = extract()
+        logger.info(
+            "Data extracted from API. Location: %s | "
+            "Temp: %s C | Wind: %s km/h | Observed: %s",
+            raw_data["latitude"],
+            raw_data["current_weather"]["temperature"],
+            raw_data["current_weather"]["windspeed"],
+            raw_data["current_weather"]["time"],
+        )
 
-    logger.info(
-        "Pipeline complete. Location: %s | "
-        "Temp: %s C / %s F | "
-        "Wind: %s km/h / %s mph | "
-        "Observed: %s",
-        clean["location"],
-        clean["temperature_c"],
-        clean["temperature_f"],
-        clean["wind_speed_kmh"],
-        clean["wind_speed_mph"],
-        clean["observed_at"],
-    )
+        clean = transform(raw_data)
+        logger.info(
+            "Data transformed. Location: %s | "
+            "Temp: %s C / %s F | "
+            "Wind: %s km/h / %s mph | "
+            "Observed: %s",
+            clean["location"],
+            clean["temperature_c"],
+            clean["temperature_f"],
+            clean["wind_speed_kmh"],
+            clean["wind_speed_mph"],
+            clean["observed_at"],
+        )
+
+        load(clean)
+        logger.info(
+            "Data loaded into PostgreSQL. Location: %s | "
+            "Temp: %s C / %s F | "
+            "Wind: %s km/h / %s mph | "
+            "Observed: %s",
+            clean["location"],
+            clean["temperature_c"],
+            clean["temperature_f"],
+            clean["wind_speed_kmh"],
+            clean["wind_speed_mph"],
+            clean["observed_at"],
+        )
+
+        logger.info(
+            "Pipeline complete. Location: %s | "
+            "Temp: %s C / %s F | "
+            "Wind: %s km/h / %s mph | "
+            "Observed: %s",
+            clean["location"],
+            clean["temperature_c"],
+            clean["temperature_f"],
+            clean["wind_speed_kmh"],
+            clean["wind_speed_mph"],
+            clean["observed_at"],
+        )
+    except Exception as exc:
+        logger.exception("Pipeline failed with error: %s", exc)
+        raise
 
 
 if __name__ == "__main__":
