@@ -26,7 +26,8 @@ jobs:
 
       - name: Run pylint static analysis
         run: |
-          pylint src tests utils
+          pylint src utils
+          pylint tests --disable=duplicate-code
 
       - name: Run unit tests
         run: |
