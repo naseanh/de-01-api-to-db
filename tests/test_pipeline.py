@@ -6,6 +6,8 @@ from unittest.mock import patch
 
 from src.pipeline import run_pipeline
 
+from tests.fixtures import sample_clean_weather_record, sample_raw_weather_data
+
 
 @patch("src.pipeline.load")
 @patch("src.pipeline.transform")
@@ -13,24 +15,8 @@ from src.pipeline import run_pipeline
 def test_run_pipeline_calls_extract_transform_and_load(mock_extract, mock_transform, mock_load):
     """Verify run_pipeline() executes extract, transform, and load."""
 
-    raw_data = {
-        "latitude": 33.5018,
-        "longitude": -81.9651,
-        "current_weather": {
-            "temperature": 22.5,
-            "windspeed": 15.0,
-            "time": "2026-05-07T00:00",
-        },
-    }
-
-    clean_record = {
-        "location": "Augusta, GA",
-        "temperature_c": 22.5,
-        "temperature_f": 72.5,
-        "wind_speed_kmh": 15.0,
-        "wind_speed_mph": 9.3,
-        "observed_at": "2026-05-07T00:00",
-    }
+    raw_data = sample_raw_weather_data()
+    clean_record = sample_clean_weather_record()
 
     mock_extract.return_value = raw_data
     mock_transform.return_value = clean_record
