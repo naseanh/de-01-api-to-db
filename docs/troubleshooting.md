@@ -216,18 +216,18 @@ curl https://api.open-meteo.com/v1/forecast
 testpaths = ["tests"]
 ```
 
-* Ensure utility scripts do not start with test_
-* Verify required packages are installed in GitHub Actions workflow
+- Ensure utility scripts do not start with test_
+- Verify required packages are installed in GitHub Actions workflow
 
 Issue: pylint duplicate-code warning
 
 **Cause**:
 
-* Multiple test cases contain repeated inline mock data structures
+- Multiple test cases contain repeated inline mock data structures
 
 **Fix**:
 
-* Extract reusable fixtures or helper functions into shared test utilities
+- Extract reusable fixtures or helper functions into shared test utilities
 
 Example:
 
@@ -250,34 +250,34 @@ def sample_raw_weather_data():
 
 **Cause**:
 
-* Open-Meteo API latency
-* Network instability
-* Request exceeded configured timeout threshold
+- Open-Meteo API latency
+- Network instability
+- Request exceeded configured timeout threshold
 
 **Fix**:
 
-* Verify internet connectivity
-* Re-run the pipeline
-* Confirm retry logic is functioning correctly
-* Review logs for retry attempts and timeout messages
+- Verify internet connectivity
+- Re-run the pipeline
+- Confirm retry logic is functioning correctly
+- Review logs for retry attempts and timeout messages
 
 ### Issue: Pipeline retries but still fails
 
 **Cause**:
 
-* External API unavailable
-* Persistent DNS or connectivity issue
+- External API unavailable
+- Persistent DNS or connectivity issue
 
 **Fix**:
 
-* Validate API accessibility manually:
+- Validate API accessibility manually:
 
 ```bash
 curl https://api.open-meteo.com/v1/forecast
 ```
 
-* Check retry configuration values
-* Inspect application logs for repeated failures
+- Check retry configuration values
+- Inspect application logs for repeated failures
 
 ## Git / GitHub Issues
 
@@ -285,7 +285,7 @@ curl https://api.open-meteo.com/v1/forecast
 
 **Cause**:
 
-* SSH key is encrypted and not loaded into ssh-agent
+- SSH key is encrypted and not loaded into ssh-agent
 
 **Fix**:
 
@@ -305,17 +305,17 @@ ssh-add --apple-use-keychain ~/.ssh/id_ed25519
 
 **Cause**:
 
-* Local branch recreated using a previously merged branch name
+- Local branch recreated using a previously merged branch name
 
 **Fix**:
 
-* Rename local branch:
+- Rename local branch:
 
 ```bash
 git branch -m new-branch-name
 ```
 
-* Push upstream:
+- Push upstream:
 
 ```bash
 git push -u origin HEAD
@@ -325,20 +325,20 @@ git push -u origin HEAD
 
 **Cause**:
 
-* Branch already merged
-* No new commits pushed
-* Workflow YAML syntax issue
+- Branch already merged
+- No new commits pushed
+- Workflow YAML syntax issue
 
 **Fix**:
 
-* Create a new commit:
+- Create a new commit:
 
 ```bash
 git commit --allow-empty -m "chore: retrigger workflow"
 git push
 ```
 
-* Verify workflow syntax in .github/workflows/
+- Verify workflow syntax in .github/workflows/
 
 ```bash
 # Then Commit
