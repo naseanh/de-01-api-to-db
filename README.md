@@ -18,14 +18,17 @@ This project demonstrates foundational data engineering concepts such as:
 
 ## Key Concepts Practiced
 
-- API integration (HTTP GET requests to external weather API)
+- API integration (HTTP GET requests to an external weather API)
 - Data normalization (transforming raw API responses into structured records)
 - Database persistence (storing normalized data in PostgreSQL)
 - Dockerized databases (running PostgreSQL in a containerized environment)
 - Transaction handling (understanding commits, rollbacks, and ACID principles)
 - Error handling (implementing fail-safe exception handling)
-- Environment configuration (externalizing application settings using .env variables)
-- Operational troubleshooting (diagnosing runtime, database, and environment issues)
+- Retry and timeout handling (improving API resilience)
+- Unit testing (validating transformation, extraction, configuration, and orchestration logic)
+- CI/CD validation (running static analysis and unit tests with GitHub Actions)
+- Environment configuration (externalizing application settings using `.env` variables)
+- Operational troubleshooting (diagnosing runtime, database, CI/CD, and environment issues)
 
 ## Tech Stack
 
@@ -65,11 +68,43 @@ This repository uses GitHub Actions to automatically validate code changes durin
 
 Current workflow capabilities include:
 
-- Automatic workflow execution on push events
-- Python environment provisioning
-- Dependency installation
-- Static code analysis using pylint
-- Branch protection enforcement before merge
+Developer Push
+    ↓
+GitHub Actions Workflow Triggered
+    ↓
+Python Environment Provisioned
+    ↓
+Project Dependencies Installed
+    ↓
+Pylint Static Analysis Executed
+    ↓
+Pytest Unit Tests Executed
+    ↓
+Branch Protection Quality Gates Applied
+
+## Testing
+
+This project uses `pytest` to validate pipeline behavior without requiring live API calls or database connections.
+
+Current test coverage includes:
+
+- Transform logic validation
+- Unit conversion checks
+- Environment configuration behavior
+- API timeout and retry behavior
+- Pipeline orchestration flow
+
+Tests can be run locally with:
+
+```bash
+pytest
+```
+
+Static analysis can be run with:
+
+```bash
+pylint src tests utils
+```
 
 ### Workflow Overview
 
@@ -137,15 +172,23 @@ See [queries](sql/queries.sql) for:
 Pipeline complete. Location: Augusta, GA | Temp: 22.6C / 72.7F | Wind: 15.2 km/h / 9.4 mph | Observed: 2026-04-23 23:00:00
 ```
 
-## Next Steps (Phase 2)
+## Phase 2 Status
 
-Planned Phase 2 enhancements include:
+Phase 2 focuses on hardening the pipeline through reliability, testing, logging, and CI/CD improvements.
+
+Completed Phase 2 enhancements include:
 
 - Retry and timeout handling
-- Structured logging
+- Logging improvements
 - Unit testing with pytest
-- Enhanced CI/CD workflows
-- Security scanning
-- Containerized application deployment
-- Metrics and observability
-- Kubernetes deployment exploration
+- Expanded GitHub Actions validation
+- Centralized Python tooling configuration with `pyproject.toml`
+- Reusable test fixtures
+- Pipeline orchestration tests
+
+Remaining Phase 2 enhancements include:
+
+- Additional negative-path tests
+- Expanded troubleshooting documentation
+- SQL query pattern improvements
+- Phase 2 retrospective
