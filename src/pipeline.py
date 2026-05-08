@@ -97,9 +97,22 @@ def extract():
     Returns:
         dict: Raw JSON response from the API.
     """
-    api_response = requests.get(API_URL, params=API_PARAMS, timeout=10)
-    api_response.raise_for_status()
-    return api_response.json()
+    try:
+        api_response = requests.get(
+            API_URL,
+            params=API_PARAMS,
+            timeout=10
+        )
+        api_response.raise_for_status()
+        return api_response.json()
+    except requests.exceptions.Timeout as exc:
+        raise RuntimeError(
+            f"API request timed out: {exc}."
+        ) from exc
+    except requests.exceptions.RequestException as exc:
+        raise RuntimeError(
+            f"API request failed: {exc}."
+        ) from exc
 
 
 # =========================
