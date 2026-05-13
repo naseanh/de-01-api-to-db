@@ -312,23 +312,87 @@ flowchart LR
     linkStyle 5 stroke:#17becf,stroke-width:2px,stroke-dasharray: 5 5
 ```
 
+### Phase 4 — Kubernetes Deployment Engineering
+
+Phase 4 focuses on deploying the ETL pipeline as a Kubernetes-managed workload.
+
+Planned capabilities include:
+
+- Kubernetes-based PostgreSQL deployment
+- Kubernetes Job execution model for ETL workloads
+- ConfigMaps and Secrets
+- PersistentVolumeClaims
+- Kubernetes networking and DNS
+- kubectl operational troubleshooting
+- Readiness and health validation
+
+#### Phase 4 Kubernetes Architecture
+
+```mermaid
+%%{init: {'theme': 'base'}}%%
+flowchart LR
+    A[Kubernetes Namespace]:::cluster --> B[ETL Kubernetes Job]:::job
+    A --> C[(PostgreSQL Deployment)]:::db
+
+    B -->|Cluster DNS<br/>postgres:5432| C
+
+    D[ConfigMap]:::config --> B
+    E[Secret]:::secret --> B
+
+    F[PersistentVolumeClaim]:::storage --> C
+
+    G[schema.sql ConfigMap]:::config --> C
+
+    classDef cluster fill:#1f77b4,color:#fff
+    classDef job fill:#ff7f0e,color:#000
+    classDef db fill:#2ca02c,color:#fff
+    classDef config fill:#9467bd,color:#fff
+    classDef secret fill:#d62728,color:#fff
+    classDef storage fill:#8c564b,color:#fff
+
+    linkStyle 0 stroke:#1f77b4,stroke-width:2px
+    linkStyle 1 stroke:#1f77b4,stroke-width:2px
+    linkStyle 2 stroke:#2ca02c,stroke-width:2px
+    linkStyle 3 stroke:#9467bd,stroke-width:2px
+    linkStyle 4 stroke:#d62728,stroke-width:2px
+    linkStyle 5 stroke:#8c564b,stroke-width:2px
+    linkStyle 6 stroke:#9467bd,stroke-width:2px
+```
+
 ### Current State
 
 The project now supports:
 
-- Local Python execution
+- Local Python ETL execution
 - Dockerized PostgreSQL execution
 - Fully containerized ETL runtime using Docker Compose
-- Automated testing and CI/CD validation
+- Automated testing with pytest
+- CI/CD validation with GitHub Actions
+- Runtime configuration externalization using `.env`
+- PostgreSQL healthchecks and startup readiness
 - Operational troubleshooting and runtime diagnostics
+- Kubernetes deployment manifests for PostgreSQL and ETL workloads
+- Kubernetes Job-based ETL execution architecture
 
-### Next Phase
+### Active Development — Phase 4
 
-Phase 4 will focus on deployment and platform engineering concepts, including:
+Phase 4 focuses on Kubernetes deployment and platform engineering concepts.
 
-- Kubernetes fundamentals
-- Helm-based deployment packaging
+Current Phase 4 work includes:
+
+- Kubernetes namespace management
+- PostgreSQL Kubernetes deployment
+- Kubernetes Services and cluster DNS
+- PersistentVolumeClaims
 - ConfigMaps and Secrets
-- Kubernetes Jobs for ETL execution
-- Health probes and readiness checks
-- Platform-level observability and diagnostics
+- Kubernetes Job-based ETL execution
+- Kubernetes operational runbooks
+- Readiness and health validation
+
+Planned upcoming enhancements include:
+
+- Local Kubernetes cluster deployment validation
+- `kubectl` operational troubleshooting workflows
+- Kubernetes log inspection and debugging
+- Helm packaging fundamentals
+- Kubernetes observability foundations
