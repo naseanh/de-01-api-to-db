@@ -207,6 +207,25 @@ Completed capabilities:
 - SQL schema design
 - Operational troubleshooting basics
 
+#### Phase 1 Architecture
+
+```mermaid
+%%{init: {'theme': 'base'}}%%
+flowchart LR
+    A[Open-Meteo API]:::api -->|HTTP JSON| B[Python ETL Pipeline]:::app
+    B -->|Transform / Normalize| C[Structured Weather Record]:::process
+    C -->|INSERT via psycopg2| D[(PostgreSQL Database)]:::db
+
+    classDef api fill:#1f77b4,color:#fff
+    classDef app fill:#ff7f0e,color:#000
+    classDef process fill:#9467bd,color:#fff
+    classDef db fill:#2ca02c,color:#fff
+
+    linkStyle 0 stroke:#1f77b4,stroke-width:2px
+    linkStyle 1 stroke:#9467bd,stroke-width:2px
+    linkStyle 2 stroke:#2ca02c,stroke-width:2px
+```
+
 ### Phase 2 — Reliability and Testing Enhancements
 
 Phase 2 focused on improving operational maturity, resiliency, testing, and CI/CD validation.
@@ -223,6 +242,34 @@ Completed capabilities:
 - Expanded troubleshooting documentation
 - `pyproject.toml` centralized tooling configuration
 
+#### Phase 2 Reliability and Testing Flow
+
+```mermaid
+%%{init: {'theme': 'base'}}%%
+flowchart TD
+    A[Developer Push]:::developer --> B[GitHub Actions Workflow]:::cicd
+    B --> C[Install Dependencies]:::process
+    C --> D[Pylint Static Analysis]:::validation
+    D --> E[Pytest Unit Tests]:::testing
+    E --> F[Retry / Timeout Logic Validation]:::resilience
+    F --> G[Branch Protection Quality Gate]:::security
+
+    classDef developer fill:#7f7f7f,color:#fff
+    classDef cicd fill:#1f77b4,color:#fff
+    classDef process fill:#ff7f0e,color:#000
+    classDef validation fill:#d62728,color:#fff
+    classDef testing fill:#9467bd,color:#fff
+    classDef resilience fill:#17becf,color:#000
+    classDef security fill:#2ca02c,color:#fff
+
+    linkStyle 0 stroke:#1f77b4,stroke-width:2px
+    linkStyle 1 stroke:#ff7f0e,stroke-width:2px
+    linkStyle 2 stroke:#d62728,stroke-width:2px
+    linkStyle 3 stroke:#9467bd,stroke-width:2px
+    linkStyle 4 stroke:#17becf,stroke-width:2px
+    linkStyle 5 stroke:#2ca02c,stroke-width:2px
+```
+
 ### Phase 3 — Containerized Runtime and Orchestration
 
 Phase 3 transitioned the project into a portable multi-service runtime using Docker and Docker Compose.
@@ -238,6 +285,32 @@ Completed capabilities:
 - `.env` and `.env.example` externalized configuration strategy
 - Makefile developer workflow automation
 - Non-root container execution
+
+#### Phase 3 Containerized Runtime
+
+```mermaid
+%%{init: {'theme': 'base'}}%%
+flowchart LR
+    A[Docker Compose]:::orchestrator --> B[ETL App Container]:::app
+    A --> C[(PostgreSQL Container)]:::db
+    B -->|DB_HOST=postgres<br/>DB_PORT=5432| C
+    C --> D[(Persistent Volume)]:::storage
+    E[schema.sql]:::config -->|Init on fresh volume| C
+    C -->|Healthcheck / Readiness| B
+
+    classDef orchestrator fill:#1f77b4,color:#fff
+    classDef app fill:#ff7f0e,color:#000
+    classDef db fill:#2ca02c,color:#fff
+    classDef storage fill:#8c564b,color:#fff
+    classDef config fill:#9467bd,color:#fff
+
+    linkStyle 0 stroke:#1f77b4,stroke-width:2px
+    linkStyle 1 stroke:#1f77b4,stroke-width:2px
+    linkStyle 2 stroke:#2ca02c,stroke-width:2px
+    linkStyle 3 stroke:#8c564b,stroke-width:2px
+    linkStyle 4 stroke:#9467bd,stroke-width:2px
+    linkStyle 5 stroke:#17becf,stroke-width:2px,stroke-dasharray: 5 5
+```
 
 ### Current State
 
