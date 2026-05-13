@@ -414,6 +414,92 @@ docker logs pipeline_postgres
 psql -h localhost -p 5433 -U pipeline_user -d pipeline_db
 ```
 
+## Kubernetes Issues
+
+### Issue: `ErrImageNeverPull`
+
+**Cause**:
+
+- Kubernetes cannot find the image locally
+- `imagePullPolicy: Never` prevents pulling from a registry
+- The image name in `k8s/etl-job.yaml` does not match the locally built image
+
+**Fix**:
+
+- Build the image using the same name referenced by the Job manifest:
+
+```bash
+docker build -t localhost:5000/weather-etl:local .
+```
+
+- Confirm the Job manifest uses:
+
+```yaml
+image: localhost:5000/weather-etl:local
+imagePullPolicy: IfNotPresent
+```
+
+- Recreate the Job:
+
+```bash
+kubectl delete job weather-etl-job -n data-pipelines
+kubectl apply -f k8s/etl-job.yaml
+```
+
+### Issue: Kubernetes Job completed but logs are hard to find
+
+**Cause**:
+
+- Jobs create short-lived Pods
+- The container exits after completion
+
+**Fix**:
+
+```bash
+kubectl get pods -n data-pipelines -l app=weather-etl
+kubectl logs -n data-pipelines -l app=weather-etl
+```
+
+### Issue: PostgreSQL schema does not initialize
+
+**Cause**:
+
+- PostgreSQL only runs /docker-entrypoint-initdb.d/ scripts during first database initialization
+- Existing PersistentVolumeClaim already contains initialized database files
+
+**Fix**:
+
+Delete and recreate the namespace or PVC:
+
+```bash
+kubectl delete namespace data-pipelines
+kubectl apply -f k8s/
+```
+
+### Issue: PostgreSQL Pod is running but ETL Job cannot connect
+
+**Cause**:
+
+- PostgreSQL may not be ready yet
+- Service DNS may be incorrect
+- ConfigMap or Secret values may be wrong
+
+**Fix**:
+
+```bash
+kubectl get svc -n data-pipelines
+kubectl get pods -n data-pipelines
+kubectl describe pod -n data-pipelines -l app=postgres
+kubectl logs -n data-pipelines -l app=postgres
+```
+
+Verify the ETL Job uses:
+
+```yaml
+DB_HOST: postgres
+DB_PORT: "5432"
+```
+
 ## When to Escalate
 
 If issues persist:
