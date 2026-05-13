@@ -148,6 +148,24 @@ Branch Protection Quality Gates Applied
     python3 src/pipeline.py
     ```
 
+## Docker Compose Runtime
+
+Phase 3 adds a containerized runtime using Docker Compose.
+
+The Compose stack includes:
+
+- PostgreSQL database container
+- ETL application container
+- Shared Docker network
+- Persistent PostgreSQL volume
+- Automatic schema initialization
+- PostgreSQL healthcheck before ETL startup
+
+Run the full stack:
+
+```bash
+docker compose up --build
+
 ## Example Queries
 
 See [queries](sql/queries.sql) for:
