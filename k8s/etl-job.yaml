@@ -1,0 +1,56 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: weather-etl-job
+  namespace: data-pipelines
+spec:
+  backoffLimit: 3
+
+  template:
+    metadata:
+      labels:
+        app: weather-etl
+
+    spec:
+      restartPolicy: Never
+
+      containers:
+        - name: weather-etl
+
+          image: de-01-api-to-db-etl_pipeline:latest
+
+          imagePullPolicy: Never
+
+          env:
+            - name: DB_HOST
+              value: postgres
+
+            - name: DB_PORT
+              value: "5432"
+
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: POSTGRES_DB
+
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: POSTGRES_USER
+
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+
+            - name: WEATHER_LOCATION
+              value: "Baltimore, MD"
+
+            - name: WEATHER_LATITUDE
+              value: "39.2904"
+
+            - name: WEATHER_LONGITUDE
+              value: "-76.6122"
