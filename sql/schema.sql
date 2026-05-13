@@ -31,7 +31,3 @@ CREATE TABLE IF NOT EXISTS weather_observations (
 --   (common pattern for dashboards and APIs)
 CREATE INDEX IF NOT EXISTS idx_weather_location_time
 ON weather_observations (location, observed_at DESC);
-
-ALTER TABLE weather_observations
-ADD COLUMN temperature_f DOUBLE PRECISION,
-ADD COLUMN wind_speed_mph DOUBLE PRECISION;
