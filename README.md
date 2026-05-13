@@ -314,17 +314,23 @@ flowchart LR
 
 ### Phase 4 — Kubernetes Deployment Engineering
 
-Phase 4 focuses on deploying the ETL pipeline as a Kubernetes-managed workload.
+### Completed Phase 4 — Kubernetes Platform Deployment
 
-Planned capabilities include:
+Phase 4 focused on deploying the ETL pipeline into Kubernetes using native platform resources and operational workflows.
 
-- Kubernetes-based PostgreSQL deployment
-- Kubernetes Job execution model for ETL workloads
-- ConfigMaps and Secrets
+Completed capabilities include:
+
+- Kubernetes namespace management
+- PostgreSQL Kubernetes deployment
+- Kubernetes Services and cluster DNS
 - PersistentVolumeClaims
-- Kubernetes networking and DNS
-- kubectl operational troubleshooting
-- Readiness and health validation
+- ConfigMaps and Secrets
+- Kubernetes Job-based ETL execution
+- PostgreSQL schema initialization through ConfigMaps
+- Kubernetes deployment runbooks
+- Kubernetes troubleshooting documentation
+- Runtime validation using `kubectl`
+- Local Kubernetes image build workflows
 
 #### Phase 4 Kubernetes Architecture
 
@@ -371,28 +377,24 @@ The project now supports:
 - Runtime configuration externalization using `.env`
 - PostgreSQL healthchecks and startup readiness
 - Operational troubleshooting and runtime diagnostics
-- Kubernetes deployment manifests for PostgreSQL and ETL workloads
-- Kubernetes Job-based ETL execution architecture
-
-### Active Development — Phase 4
-
-Phase 4 focuses on Kubernetes deployment and platform engineering concepts.
-
-Current Phase 4 work includes:
-
-- Kubernetes namespace management
-- PostgreSQL Kubernetes deployment
+- Kubernetes-native PostgreSQL deployment
 - Kubernetes Services and cluster DNS
-- PersistentVolumeClaims
-- ConfigMaps and Secrets
+- Kubernetes ConfigMaps and Secrets
+- Kubernetes PersistentVolumeClaims
 - Kubernetes Job-based ETL execution
-- Kubernetes operational runbooks
-- Readiness and health validation
+- Kubernetes operational workflows using `kubectl`
+- Local Kubernetes platform deployment validation
 
-Planned upcoming enhancements include:
+### Next Phase — Helm and Kubernetes Packaging
 
-- Local Kubernetes cluster deployment validation
-- `kubectl` operational troubleshooting workflows
-- Kubernetes log inspection and debugging
-- Helm packaging fundamentals
+Phase 5 will focus on improving Kubernetes deployment portability and operational maturity.
+
+Planned Phase 5 enhancements include:
+
+- Helm chart packaging
+- Helm values-based configuration
+- Kubernetes CronJobs
+- Environment-specific deployment profiles
 - Kubernetes observability foundations
+- Metrics and monitoring integration
+- Improved deployment automation
