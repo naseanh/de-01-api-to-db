@@ -191,23 +191,71 @@ See [queries](sql/queries.sql) for:
 Pipeline complete. Location: Augusta, GA | Temp: 22.6C / 72.7F | Wind: 15.2 km/h / 9.4 mph | Observed: 2026-04-23 23:00:00
 ```
 
-## Phase 2 Status
+## Project Status
 
-Phase 2 focuses on hardening the pipeline through reliability, testing, logging, and CI/CD improvements.
+### Phase 1 — Foundational ETL Pipeline ✅
 
-Completed Phase 2 enhancements include:
+Phase 1 established the core ETL workflow and foundational data engineering concepts.
+
+Completed capabilities:
+
+- Open-Meteo API ingestion
+- Data normalization and transformation
+- PostgreSQL persistence
+- Dockerized PostgreSQL runtime
+- Environment-based configuration
+- SQL schema design
+- Operational troubleshooting basics
+
+### Phase 2 — Reliability and Testing Enhancements ✅
+
+Phase 2 focused on improving operational maturity, resiliency, testing, and CI/CD validation.
+
+Completed capabilities:
 
 - Retry and timeout handling
-- Logging improvements
-- Unit testing with pytest
-- Expanded GitHub Actions validation
-- Centralized Python tooling configuration with `pyproject.toml`
-- Reusable test fixtures
+- Structured logging
+- pytest-based unit testing
+- Negative-path testing
+- GitHub Actions CI validation
 - Pipeline orchestration tests
-
-Remaining Phase 2 enhancements include:
-
-- Additional negative-path tests
+- Reusable test fixtures
 - Expanded troubleshooting documentation
-- SQL query pattern improvements
-- Phase 2 retrospective
+- `pyproject.toml` centralized tooling configuration
+
+### Phase 3 — Containerized Runtime and Orchestration ✅
+
+Phase 3 transitioned the project into a portable multi-service runtime using Docker and Docker Compose.
+
+Completed capabilities:
+
+- Dockerized ETL application runtime
+- Docker Compose orchestration
+- PostgreSQL healthchecks and startup readiness
+- Persistent PostgreSQL volumes
+- Automatic schema initialization
+- Container networking and runtime configuration
+- `.env` and `.env.example` externalized configuration strategy
+- Makefile developer workflow automation
+- Non-root container execution
+
+### Current State
+
+The project now supports:
+
+- Local Python execution
+- Dockerized PostgreSQL execution
+- Fully containerized ETL runtime using Docker Compose
+- Automated testing and CI/CD validation
+- Operational troubleshooting and runtime diagnostics
+
+### Next Phase
+
+Phase 4 will focus on deployment and platform engineering concepts, including:
+
+- Kubernetes fundamentals
+- Helm-based deployment packaging
+- ConfigMaps and Secrets
+- Kubernetes Jobs for ETL execution
+- Health probes and readiness checks
+- Platform-level observability and diagnostics
