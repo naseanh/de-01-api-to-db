@@ -17,9 +17,9 @@ spec:
       containers:
         - name: weather-etl
 
-          image: de-01-api-to-db-etl_pipeline:latest
+          image: localhost:5000/weather-etl:local
 
-          imagePullPolicy: Never
+          imagePullPolicy: IfNotPresent
 
           env:
             - name: DB_HOST
