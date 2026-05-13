@@ -4,6 +4,14 @@
 
 Deploy the ETL pipeline into Kubernetes as a job-based workload.
 
+## Build Local Kubernetes Image
+
+Build the ETL image locally so the Kubernetes cluster can access it.
+
+```bash
+docker build -t localhost:5000/weather-etl:local .
+```
+
 ## Apply Manifests
 
 ```bash

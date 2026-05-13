@@ -221,3 +221,6 @@ out/
 *.log
 scratch/
 .DS_Store
+
+# Docker image archives
+*.tar
