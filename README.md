@@ -193,7 +193,7 @@ Pipeline complete. Location: Augusta, GA | Temp: 22.6C / 72.7F | Wind: 15.2 km/h
 
 ## Project Status
 
-### Phase 1 — Foundational ETL Pipeline ✅
+### Phase 1 — Foundational ETL Pipeline
 
 Phase 1 established the core ETL workflow and foundational data engineering concepts.
 
@@ -207,7 +207,7 @@ Completed capabilities:
 - SQL schema design
 - Operational troubleshooting basics
 
-### Phase 2 — Reliability and Testing Enhancements ✅
+### Phase 2 — Reliability and Testing Enhancements
 
 Phase 2 focused on improving operational maturity, resiliency, testing, and CI/CD validation.
 
@@ -223,7 +223,7 @@ Completed capabilities:
 - Expanded troubleshooting documentation
 - `pyproject.toml` centralized tooling configuration
 
-### Phase 3 — Containerized Runtime and Orchestration ✅
+### Phase 3 — Containerized Runtime and Orchestration
 
 Phase 3 transitioned the project into a portable multi-service runtime using Docker and Docker Compose.
 
