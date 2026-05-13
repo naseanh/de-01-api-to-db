@@ -16,3 +16,15 @@ compose-down:
 compose-reset:
 	docker compose down -v
 	docker compose up --build
+
+k8s-apply:
+	kubectl apply -f k8s/
+
+k8s-status:
+	kubectl get all -n data-pipelines
+
+k8s-logs:
+	kubectl logs -n data-pipelines -l app=weather-etl
+
+k8s-clean:
+	kubectl delete namespace data-pipelines
