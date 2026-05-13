@@ -111,7 +111,7 @@ Check:
 - Docker container is running
 - `.env` values are correct
 
-## Environemnt Issues
+## Environment Issues
 
 ### Issue: `.env` variables not loading
 
@@ -339,6 +339,60 @@ git push
 ```
 
 - Verify workflow syntax in .github/workflows/
+
+## Docker Compose Issues
+
+### Issue: container name is already in use
+
+**Cause**: A previous standalone Docker container already exists with the same name.
+
+**Fix**:
+
+```bash
+docker rm -f pipeline_postgres
+```
+
+Or remove fixed container_name values from docker-compose.yml.
+
+**Issue**: app connects to postgres on the wrong port
+
+**Cause**: Local host uses mapped port 5433, but containers communicate internally on port `5432`.
+
+**Fix**:
+
+```yaml
+DB_HOST: postgres
+DB_PORT: "5432"
+```
+
+**Issue**: relation “weather_observations” does not exist
+
+**Cause**: The schema was not initialized in the Compose PostgreSQL volume.
+
+**Fix**:
+
+```bash
+docker compose down -v
+docker compose up --build
+```
+
+**Issue**: schema initialization fails
+
+**Cause**: schema.sql contains duplicate column creation or non-idempotent SQL.
+
+**Fix**: Ensure columns are defined once in CREATE TABLE and avoid duplicate ALTER TABLE statements.
+
+**Issue**: ETL starts before PostgreSQL is ready
+
+**Cause**: depends_on controls start order, not readiness.
+
+**Fix**: Add a PostgreSQL healthcheck and use:
+
+```yaml
+depends_on:
+  postgres:
+    condition: service_healthy
+```
 
 ## Debugging Tips
 
