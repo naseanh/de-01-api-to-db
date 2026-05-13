@@ -17,5 +17,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application source code and project files.
 COPY src/ ./src/
 
+# Create a non-root user to run the application for better security.
+RUN adduser --disabled-password --gecos "" appuser
+USER appuser
+
 # Run the ETL pipeline.
 CMD ["python", "src/pipeline.py"]

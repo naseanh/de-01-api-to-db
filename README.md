@@ -165,6 +165,7 @@ Run the full stack:
 
 ```bash
 docker compose up --build
+```
 
 ## Example Queries
 
