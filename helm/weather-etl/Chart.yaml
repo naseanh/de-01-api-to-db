@@ -1,0 +1,6 @@
+apiVersion: v2
+name: weather-etl
+description: A Helm chart for deploying the API-to-PostgreSQL ETL pipeline
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
