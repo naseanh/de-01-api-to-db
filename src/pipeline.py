@@ -25,13 +25,17 @@ import os
 from datetime import datetime
 import time
 import logging
+import sys
 
 import psycopg2
 import requests
 from dotenv import load_dotenv
 
 logging.basicConfig(
+    level=logging.INFO,
     format="%(asctime)s %(levelname)s %(name)s - %(message)s",
+    stream=sys.stdout,
+    force=True,
 )
 
 logger = logging.getLogger(__name__)
@@ -289,6 +293,10 @@ def run_pipeline():
             clean["wind_speed_mph"],
             clean["observed_at"],
         )
+
+        print("STDOUT TEST: ETL pipeline completed successfully.", flush=True)
+        logger.info("ETL pipeline completed successfully.")
+
     except Exception as exc:
         logger.exception("Pipeline failed with error: %s", exc)
         raise

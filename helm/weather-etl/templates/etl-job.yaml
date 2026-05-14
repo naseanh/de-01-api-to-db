@@ -19,6 +19,28 @@ spec:
     spec:
       restartPolicy: Never
 
+      initContainers:
+        - name: wait-for-postgres
+          image: postgres:15
+
+          command:
+            - sh
+            - -c
+            - |
+              echo "Waiting for PostgreSQL..."
+
+              until pg_isready \
+                -h postgres \
+                -p 5432 \
+                -U {{ .Values.postgres.username }} \
+                -d {{ .Values.postgres.database }}
+              do
+                echo "PostgreSQL not ready yet..."
+                sleep 2
+              done
+
+              echo "PostgreSQL is ready."
+
       containers:
         - name: weather-etl
 
