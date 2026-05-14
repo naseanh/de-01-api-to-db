@@ -1,0 +1,86 @@
+{{- if .Values.etl.cronjob.enabled }}
+
+apiVersion: batch/v1
+kind: CronJob
+
+metadata:
+  name: {{ .Values.etl.cronjob.name }}
+  namespace: {{ .Values.namespace.name }}
+
+  labels:
+    {{- include "weather-etl.labels" . | nindent 4 }}
+
+spec:
+  schedule: {{ .Values.etl.cronjob.schedule | quote }}
+
+  jobTemplate:
+    spec:
+      backoffLimit: {{ .Values.etl.job.backoffLimit }}
+
+      template:
+        metadata:
+          labels:
+            {{- include "weather-etl.etlLabels" . | nindent 12 }}
+
+        spec:
+          restartPolicy: Never
+
+          initContainers:
+            - name: wait-for-postgres
+              image: postgres:15
+
+              command:
+                - sh
+                - -c
+                - |
+                  until pg_isready \
+                    -h postgres \
+                    -p 5432 \
+                    -U {{ .Values.postgres.username }} \
+                    -d {{ .Values.postgres.database }}
+                  do
+                    echo "Waiting for PostgreSQL..."
+                    sleep 2
+                  done
+
+          containers:
+            - name: weather-etl
+
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+              env:
+                - name: DB_HOST
+                  value: postgres
+
+                - name: DB_PORT
+                  value: "{{ .Values.postgres.service.port }}"
+
+                - name: DB_NAME
+                  valueFrom:
+                    configMapKeyRef:
+                      name: postgres-config
+                      key: POSTGRES_DB
+
+                - name: DB_USER
+                  valueFrom:
+                    configMapKeyRef:
+                      name: postgres-config
+                      key: POSTGRES_USER
+
+                - name: DB_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgres-secret
+                      key: POSTGRES_PASSWORD
+
+                - name: WEATHER_LOCATION
+                  value: {{ .Values.weather.location | quote }}
+
+                - name: WEATHER_LATITUDE
+                  value: {{ .Values.weather.latitude | quote }}
+
+                - name: WEATHER_LONGITUDE
+                  value: {{ .Values.weather.longitude | quote }}
+
+{{- end }}

@@ -25,3 +25,8 @@ etl:
   job:
     name: weather-etl-job
     backoffLimit: 3
+
+  cronjob:
+    enabled: true
+    name: weather-etl-cronjob
+    schedule: "*/15 * * * *"
