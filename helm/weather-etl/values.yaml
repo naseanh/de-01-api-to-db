@@ -1,0 +1,27 @@
+namespace:
+  name: data-pipelines
+
+image:
+  repository: localhost:5000/weather-etl
+  tag: local
+  pullPolicy: IfNotPresent
+
+postgres:
+  image: postgres:15
+  database: pipeline_db
+  username: pipeline_user
+  password: change_me
+  storage:
+    size: 1Gi
+  service:
+    port: 5432
+
+weather:
+  location: "Baltimore, MD"
+  latitude: "39.2904"
+  longitude: "-76.6122"
+
+etl:
+  job:
+    name: weather-etl-job
+    backoffLimit: 3
