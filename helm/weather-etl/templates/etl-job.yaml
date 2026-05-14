@@ -1,0 +1,60 @@
+apiVersion: batch/v1
+kind: Job
+
+metadata:
+  name: {{ .Values.etl.job.name }}
+  namespace: {{ .Values.namespace.name }}
+
+  labels:
+    {{- include "weather-etl.labels" . | nindent 4 }}
+
+spec:
+  backoffLimit: {{ .Values.etl.job.backoffLimit }}
+
+  template:
+    metadata:
+      labels:
+        {{- include "weather-etl.etlLabels" . | nindent 8 }}
+
+    spec:
+      restartPolicy: Never
+
+      containers:
+        - name: weather-etl
+
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+          env:
+            - name: DB_HOST
+              value: postgres
+
+            - name: DB_PORT
+              value: "{{ .Values.postgres.service.port }}"
+
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: POSTGRES_DB
+
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: POSTGRES_USER
+
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+
+            - name: WEATHER_LOCATION
+              value: {{ .Values.weather.location | quote }}
+
+            - name: WEATHER_LATITUDE
+              value: {{ .Values.weather.latitude | quote }}
+
+            - name: WEATHER_LONGITUDE
+              value: {{ .Values.weather.longitude | quote }}
