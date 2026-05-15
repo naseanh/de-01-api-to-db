@@ -4,6 +4,7 @@ Unit tests for full pipeline orchestration behavior.
 
 from unittest.mock import patch
 
+from src import pipeline
 from src.pipeline import run_pipeline
 
 from tests.fixtures import sample_clean_weather_record, sample_raw_weather_data
@@ -26,3 +27,21 @@ def test_run_pipeline_calls_extract_transform_and_load(mock_extract, mock_transf
     mock_extract.assert_called_once_with()
     mock_transform.assert_called_once_with(raw_data)
     mock_load.assert_called_once_with(clean_record)
+
+def test_run_pipeline_logs_success_message(monkeypatch, caplog):
+    """Verify run_pipeline logs successful pipeline completion."""
+
+    raw_data = sample_raw_weather_data()
+    clean_record = sample_clean_weather_record()
+
+    monkeypatch.setattr(pipeline, "extract", lambda: raw_data)
+    monkeypatch.setattr(pipeline, "transform", lambda data: clean_record)
+    monkeypatch.setattr(pipeline, "load", lambda record: None)
+
+    with caplog.at_level("INFO"):
+        pipeline.run_pipeline()
+
+    assert "ETL pipeline completed successfully" in caplog.text
+    assert "Extract stage completed" in caplog.text
+    assert "Transform stage completed" in caplog.text
+    assert "Load stage completed" in caplog.text
