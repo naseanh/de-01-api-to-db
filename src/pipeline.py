@@ -31,6 +31,7 @@ import psycopg2
 import requests
 from dotenv import load_dotenv
 from src.metrics import metrics
+from src.metrics import get_metrics_snapshot
 
 logging.basicConfig(
     level=logging.INFO,
@@ -337,8 +338,14 @@ def run_pipeline():
             "ETL pipeline completed successfully in %.2f seconds.",
             total_duration,
         )
+        logger.info(
+            "Metrics snapshot: %s",
+            get_metrics_snapshot(),
+        )
 
     except Exception as exc:
+        total_duration = time.time() - pipeline_start_time
+        metrics.last_total_duration_seconds = total_duration
         metrics.failed_runs += 1
         logger.info(
             "Pipeline metrics | total_runs=%s successful_runs=%s failed_runs=%s",
