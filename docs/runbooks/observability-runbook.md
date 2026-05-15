@@ -16,6 +16,20 @@ The ETL pipeline currently emits logs for:
 - successful pipeline completion
 - pipeline failure context
 
+## Current Metrics Signals
+
+The ETL pipeline currently tracks lightweight in-memory metrics for:
+
+- total pipeline runs
+- successful pipeline runs
+- failed pipeline runs
+- extract stage duration
+- transform stage duration
+- load stage duration
+- total pipeline duration
+
+These metrics are currently logged during execution and will later become the foundation for Prometheus and OpenTelemetry integration.
+
 ## Local Log Validation
 
 Run:
