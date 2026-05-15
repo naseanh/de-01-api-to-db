@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 
-# =========================================================
-# Remote Branch Cleanup
-# Deletes all remote branches except:
-# - origin/main
-# - origin/HEAD
-# =========================================================
+set -e
+
+echo "========================================="
+echo "Remote Branch Cleanup"
+echo "========================================="
 
 git branch -r \
 | grep -v "origin/main" \
@@ -13,22 +12,22 @@ git branch -r \
 | sed 's/origin\///' \
 | xargs -I {} git push origin --delete {}
 
-# =========================================================
-# Local Branch Cleanup
-# Deletes all merged local branches except:
-# - current branch
-# - main
-# =========================================================
+echo ""
+echo "========================================="
+echo "Local Branch Cleanup"
+echo "========================================="
 
-git branch --merged \
+git branch \
 | grep -v "\\*" \
 | grep -v "main" \
-| xargs git branch -d
+| xargs git branch -D
 
-# =========================================================
-# Remove stale references
-# =========================================================
+echo ""
+echo "========================================="
+echo "Pruning stale references"
+echo "========================================="
 
 git fetch --prune
 
+echo ""
 echo "Branch cleanup complete."
