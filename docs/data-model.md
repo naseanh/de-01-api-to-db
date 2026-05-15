@@ -61,7 +61,7 @@ flowchart TD
 | observed_at | TIMESTAMPTZ | Timestamp of the observation (source time) |
 | ingested_at | TIMESTAMPTZ | Timestamp when record was inserted |
 
-## Contraints
+## Constraints
 
 ### Primary Key
 
@@ -78,7 +78,7 @@ UNIQUE (location, observed_at)
 ```
 
 - Prevents duplicate observations for the same location and time
-- Enable idempotent pipeline behanvior
+- Enable idempotent pipeline behavior
 
 ### Indexes
 
@@ -145,14 +145,14 @@ flowchart LR
 
     - Why:
         - Prevents duplicate ingestion
-        - Supports safe re-runs of pipeleine
+        - Supports safe re-runs of pipeline
 
 4. Simple Schema (Phase 1)
     - Single table design
     - No joins required
     - Why:
         - Keeps system simple for learning and iteration
-        - Reduces coplexity during early development
+        - Reduces complexity during early development
 
 ## Example Queries
 
@@ -184,8 +184,26 @@ GROUP BY location;
 
 ## Possible Future Enhancements
 
-- Separate locations into a dimention table
-- Add historical weather storage (hour/daily)
-- Add indexes for time-range queries
-- Introduce partitioning for large datasets
-- Normalize units into a measurement system
+### Operational Considerations
+
+The data model is currently optimized for:
+
+- single-region PostgreSQL deployment
+- lightweight ETL ingestion
+- low-to-medium ingestion volume
+- scheduled Kubernetes CronJob execution
+
+Current operational characteristics:
+
+- idempotent inserts using UNIQUE constraints
+- append-oriented ingestion pattern
+- optimized latest-record retrieval using indexes
+- compatible with Kubernetes-managed PostgreSQL storage
+
+Future scalability improvements may include:
+
+- table partitioning
+- retention policies
+- connection pooling
+- read replicas
+- time-series database integration
