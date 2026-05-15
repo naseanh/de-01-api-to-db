@@ -28,3 +28,34 @@ k8s-logs:
 
 k8s-clean:
 	kubectl delete namespace data-pipelines
+
+.PHONY: helm-lint helm-template helm-install helm-upgrade helm-uninstall helm-status helm-history helm-rollback
+
+helm-lint:
+	helm lint helm/weather-etl
+
+helm-template:
+	helm template weather-etl helm/weather-etl
+
+helm-install:
+	helm upgrade --install weather-etl helm/weather-etl \
+		--namespace data-pipelines \
+		--create-namespace \
+		--wait
+
+helm-upgrade:
+	helm upgrade weather-etl helm/weather-etl \
+		--namespace data-pipelines \
+		--wait
+
+helm-uninstall:
+	helm uninstall weather-etl -n data-pipelines
+
+helm-status:
+	helm status weather-etl -n data-pipelines
+
+helm-history:
+	helm history weather-etl -n data-pipelines
+
+helm-rollback:
+	helm rollback weather-etl 1 -n data-pipelines
