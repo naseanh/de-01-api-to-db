@@ -395,8 +395,6 @@ The project now supports:
 - Helm deployment automation using Makefiles
 - Helm chart validation within GitHub Actions
 
----
-
 ### Platform Tooling and Package Management Overview
 
 | Platform / Ecosystem | Primary Tool | Purpose |
@@ -415,8 +413,6 @@ The project now supports:
 | Container Registry | Local Docker Registry | Kubernetes image distribution |
 | Version Control | `git` | Source control and collaboration |
 | Git Hosting | GitHub | Repository hosting and CI integration |
-
----
 
 ### Platform Evolution Diagram
 
@@ -455,8 +451,6 @@ flowchart LR
     linkStyle 9 stroke:#7f7f7f,stroke-width:1.5px,stroke-dasharray: 4 4
 ```
 
----
-
 ### Phase 5 — Helm Packaging and Kubernetes Operational Maturity
 
 Phase 5 focuses on Kubernetes deployment portability, reusable infrastructure packaging, and operational automation.
@@ -483,8 +477,6 @@ Planned upcoming enhancements include:
 - Kubernetes scaling and resiliency concepts
 - Production-grade container registry workflows
 - Centralized logging and telemetry integration
-
----
 
 ### Next Phase — Observability and Platform Monitoring
 
