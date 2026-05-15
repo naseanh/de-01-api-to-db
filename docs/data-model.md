@@ -12,8 +12,6 @@ This table is designed to support:
 - Location-based filtering
 - Basic analytics and aggregation
 
----
-
 ## Table: weather_observations
 
 ```mermaid

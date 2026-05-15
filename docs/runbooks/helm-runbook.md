@@ -4,8 +4,6 @@
 
 Deploy the ETL pipeline into Kubernetes using Helm packaging and release management workflows.
 
----
-
 ## Build Local Kubernetes Image
 
 Build the ETL image locally before deployment.

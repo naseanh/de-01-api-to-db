@@ -6,8 +6,6 @@ Phase 4 focused on deploying the ETL pipeline as a Kubernetes-managed workload.
 
 The goal was to move beyond Docker Compose and understand how the same pipeline can run inside a Kubernetes cluster using native platform resources.
 
----
-
 ## Major Enhancements Completed
 
 ### Kubernetes Workload Deployment
@@ -32,8 +30,6 @@ The goal was to move beyond Docker Compose and understand how the same pipeline 
 - Added Kubernetes troubleshooting notes
 - Updated README with Phase 4 architecture diagram
 - Documented local image build requirements
-
----
 
 ## Challenges Encountered
 
@@ -82,8 +78,6 @@ Lesson learned:
 - `localhost` does not refer to another Pod
 - Internal service communication depends on cluster DNS
 
----
-
 ## Engineering Concepts Reinforced
 
 - Kubernetes namespaces
@@ -100,8 +94,6 @@ Lesson learned:
 - Runtime troubleshooting
 - Platform deployment patterns
 
----
-
 ## Final Outcome
 
 By the end of Phase 4, the ETL pipeline successfully ran as a Kubernetes Job and connected to PostgreSQL running inside the cluster.
@@ -114,8 +106,6 @@ The project now demonstrates:
 - Runtime configuration through Kubernetes-native resources
 - Operational troubleshooting with `kubectl`
 - Platform deployment readiness
-
----
 
 ## Remaining Opportunities
 
