@@ -25,3 +25,25 @@ class PipelineMetrics:
 
 
 metrics = PipelineMetrics()
+
+def get_metrics_snapshot() -> dict:
+    """
+    Return current ETL runtime metrics snapshot.
+
+    Returns:
+        dict: Current runtime metrics values.
+    """
+
+    return {
+        "total_runs": metrics.total_runs,
+        "successful_runs": metrics.successful_runs,
+        "failed_runs": metrics.failed_runs,
+        "last_extract_duration_seconds":
+            metrics.last_extract_duration_seconds,
+        "last_transform_duration_seconds":
+            metrics.last_transform_duration_seconds,
+        "last_load_duration_seconds":
+            metrics.last_load_duration_seconds,
+        "last_total_duration_seconds":
+            metrics.last_total_duration_seconds,
+    }
