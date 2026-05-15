@@ -177,13 +177,18 @@ See [queries](sql/queries.sql) for:
 - Aggregations
 - Data validation queries
 
-## Documentation
+## Documentation Structure
 
-- [Architecture](docs/architecture.md)
-- [Setup Guide](docs/setup.md)
-- [Data Model](docs/data-model.md)
-- [Troubleshooting](docs/troubleshooting.md)
-- [Retrospective](docs/phase-1-retrospective.md)
+| Directory | Purpose |
+| --- | --- |
+| `docs/releases/` | Phase and version release notes |
+| `docs/retrospectives/` | Lessons learned and engineering reflections |
+| `docs/roadmaps/` | Forward-looking implementation plans |
+| `docs/runbooks/` | Operational procedures and troubleshooting workflows |
+| `docs/architecture.md` | Platform architecture and deployment diagrams |
+| `docs/data-model.md` | Database schema and data flow documentation |
+| `docs/setup.md` | Local environment and tooling setup |
+| `docs/troubleshooting.md` | Common issues and debugging guidance |
 
 ## Example Output
 
