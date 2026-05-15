@@ -34,7 +34,18 @@ services:
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
 
+    ports:
+      - "8000:8000"
+
     command: python -m src.pipeline
+
+  metrics_server:
+    build: .
+
+    ports:
+      - "8000:8000"
+
+    command: python -m src.metrics_server
 
 volumes:
   postgres_data:

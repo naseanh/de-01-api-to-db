@@ -68,6 +68,16 @@ Current exported metrics include:
 
 The exporter currently generates Prometheus-compatible text output internally. Future work will expose these metrics through a scrapeable HTTP endpoint or OpenTelemetry exporter.
 
+## Metrics HTTP Endpoint
+
+The ETL platform now exposes Prometheus-style metrics through an HTTP endpoint.
+
+Default endpoint:
+
+```text
+http://localhost:8000/metrics
+```
+
 ## Local Log Validation
 
 Run:
