@@ -30,6 +30,7 @@ import sys
 import psycopg2
 import requests
 from dotenv import load_dotenv
+from src.metrics import metrics
 
 logging.basicConfig(
     level=logging.INFO,
@@ -248,11 +249,13 @@ def run_pipeline():
     """
     logger.info("Starting ETL Pipeline...")
     pipeline_start_time = time.time()
+    metrics.total_runs += 1
 
     try:
         extract_start = time.time()
         weather_data = extract()
         extract_duration = time.time() - extract_start
+        metrics.last_extract_duration_seconds = extract_duration
         logger.info(
             "Extract stage completed in %.2f seconds",
             extract_duration,
@@ -269,6 +272,7 @@ def run_pipeline():
         transform_start = time.time()
         clean = transform(weather_data)
         transform_duration = time.time() - transform_start
+        metrics.last_transform_duration_seconds = transform_duration
         logger.info(
             "Transform stage completed in %.2f seconds",
             transform_duration,
@@ -289,6 +293,7 @@ def run_pipeline():
         load_start = time.time()
         load(clean)
         load_duration = time.time() - load_start
+        metrics.last_load_duration_seconds = load_duration
         logger.info(
         "Load stage completed in %.2f seconds",
             load_duration,
@@ -320,12 +325,27 @@ def run_pipeline():
         )
 
         total_duration = time.time() - pipeline_start_time
+        metrics.last_total_duration_seconds = total_duration
+        metrics.successful_runs += 1
+        logger.info(
+            "Pipeline metrics | total_runs=%s successful_runs=%s failed_runs=%s",
+            metrics.total_runs,
+            metrics.successful_runs,
+            metrics.failed_runs,
+        )
         logger.info(
             "ETL pipeline completed successfully in %.2f seconds.",
             total_duration,
         )
 
     except Exception as exc:
+        metrics.failed_runs += 1
+        logger.info(
+            "Pipeline metrics | total_runs=%s successful_runs=%s failed_runs=%s",
+            metrics.total_runs,
+            metrics.successful_runs,
+            metrics.failed_runs,
+        )
         logger.exception("Pipeline failed with error: %s", exc)
         raise
 
