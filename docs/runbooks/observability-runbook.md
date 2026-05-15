@@ -30,6 +30,25 @@ The ETL pipeline currently tracks lightweight in-memory metrics for:
 
 These metrics are currently logged during execution and will later become the foundation for Prometheus and OpenTelemetry integration.
 
+## Metrics Snapshot
+
+The pipeline exposes an internal runtime metrics snapshot that includes:
+
+- total runs
+- successful runs
+- failed runs
+- extract duration
+- transform duration
+- load duration
+- total duration
+
+The snapshot is logged at the end of each pipeline execution.
+
+Example log:
+
+```text
+Metrics snapshot: {'total_runs': 1, 'successful_runs': 1, 'failed_runs': 0, 'last_extract_duration_seconds': 0.42, 'last_transform_duration_seconds': 0.01, 'last_load_duration_seconds': 0.18, 'last_total_duration_seconds': 0.61}
+
 ## Local Log Validation
 
 Run:
