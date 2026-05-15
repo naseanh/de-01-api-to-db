@@ -22,4 +22,4 @@ RUN adduser --disabled-password --gecos "" appuser
 USER appuser
 
 # Run the ETL pipeline.
-CMD ["python", "src/pipeline.py"]
+CMD ["python", "-m", "src.pipeline"]

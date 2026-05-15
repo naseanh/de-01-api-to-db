@@ -155,7 +155,7 @@ Verify `load_dotenv()` is present in code.
 - Run:
 
 ```bash
-python3 src/pipeline.py
+python3 -m src.pipeline
 ```
 
 - Then validate:

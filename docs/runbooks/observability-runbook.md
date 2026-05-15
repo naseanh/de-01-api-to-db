@@ -21,5 +21,5 @@ The ETL pipeline currently emits logs for:
 Run:
 
 ```bash
-python src/pipeline.py
+python -m src.pipeline
 ```

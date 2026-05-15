@@ -34,7 +34,7 @@ services:
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
 
-    command: python src/pipeline.py
+    command: python -m src.pipeline
 
 volumes:
   postgres_data:

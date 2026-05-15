@@ -145,7 +145,7 @@ Branch Protection Quality Gates Applied
 4. Run pipeline
 
     ```bash
-    python3 src/pipeline.py
+    python3 -m src.pipeline
     ```
 
 ## Docker Compose Runtime

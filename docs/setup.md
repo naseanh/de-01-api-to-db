@@ -105,7 +105,7 @@ psql -h localhost -p 5433 -U pipeline_user -d pipeline_db -f sql/schema.sql
 ## 7. Run the Pipeline
 
 ```bash
-python3 src/pipeline.py
+python3 -m src.pipeline
 ```
 
 Expected output:
