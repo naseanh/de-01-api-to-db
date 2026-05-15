@@ -1,0 +1,23 @@
+Weather ETL Helm release deployed.
+
+Namespace:
+  {{ .Values.namespace.name }}
+
+Check resources:
+  kubectl get all -n {{ .Values.namespace.name }}
+
+Check ETL Job logs:
+  kubectl logs -n {{ .Values.namespace.name }} -l app=weather-etl -c weather-etl
+
+Check CronJobs:
+  kubectl get cronjobs -n {{ .Values.namespace.name }}
+
+Verify PostgreSQL data:
+  kubectl exec -it -n {{ .Values.namespace.name }} deploy/postgres -- \
+    psql -U {{ .Values.postgres.username }} -d {{ .Values.postgres.database }}
+
+Helm status:
+  helm status weather-etl -n {{ .Values.namespace.name }}
+
+Helm history:
+  helm history weather-etl -n {{ .Values.namespace.name }}
