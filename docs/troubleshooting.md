@@ -439,6 +439,15 @@ image: localhost:5000/weather-etl:local
 imagePullPolicy: IfNotPresent
 ```
 
+## When to Escalate
+
+If issues persist:
+
+1. Verify all setup steps in docs/setup.md
+2. Restart Docker
+3. Recreate the PostgreSQL container
+4. Re-run schema and pipeline from scratch
+
 - Recreate the Job:
 
 ```bash
@@ -500,11 +509,55 @@ DB_HOST: postgres
 DB_PORT: "5432"
 ```
 
-## When to Escalate
+## Helm Issues
 
-If issues persist:
+### Issue: Helm install fails due to ownership metadata
 
-1. Verify all setup steps in docs/setup.md
-2. Restart Docker
-3. Recreate the PostgreSQL container
-4. Re-run schema and pipeline from scratch
+**Cause**:
+
+Resources were originally created manually using `kubectl`.
+
+Helm requires ownership labels and annotations to manage resources.
+
+**Fix**:
+
+Delete manually created resources or namespace:
+
+```bash
+kubectl delete namespace data-pipelines
+```
+
+Then reinstall:
+
+```bash
+helm upgrade --install weather-etl helm/weather-etl \
+  --namespace data-pipelines \
+  --create-namespace
+```
+
+### Issue: Helm templates render locally but deployment fails
+
+**Cause**:
+
+Kubernetes runtime state differs from rendered templates.
+
+**Fix**:
+
+Validate both:
+
+```bash
+helm lint helm/weather-etl
+helm template weather-etl helm/weather-etl
+```
+
+## Final Validation
+
+Run:
+
+```bash
+pytest
+pylint src utils
+pylint tests --disable=duplicate-code
+helm lint helm/weather-etl
+helm template weather-etl helm/weather-etl
+```

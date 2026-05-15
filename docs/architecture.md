@@ -167,19 +167,108 @@ flowchart TD
     - Ensures automatic cleanup of connections and cursors
     - Prevents resource leaks and connection exhaustion
 
-## Limitations (Phase 1)
+## Kubernetes and Helm Runtime Architecture
 
-- Single location ingestion
-- No retry logic for API failures
-- No scheduling or automation
-- No structured logging
+```mermaid
+%%{init: {'theme': 'base'}}%%
+flowchart LR
+    A[GitHub Actions CI]:::ci --> B[Helm Chart]:::helm
+
+    B --> C[PostgreSQL Deployment]:::db
+    B --> D[ETL Job]:::job
+    B --> E[ETL CronJob]:::cron
+
+    C --> F[(PersistentVolumeClaim)]:::storage
+    C --> G[PostgreSQL Service]:::network
+
+    D -->|postgres:5432| G
+    E -->|postgres:5432| G
+
+    H[Open-Meteo API]:::api --> D
+    H --> E
+
+    I[kubectl]:::tool -.-> C
+    I -.-> D
+    I -.-> E
+
+    classDef api fill:#1f77b4,color:#fff
+    classDef db fill:#2ca02c,color:#fff
+    classDef storage fill:#8c564b,color:#fff
+    classDef network fill:#17becf,color:#000
+    classDef job fill:#ff7f0e,color:#000
+    classDef cron fill:#d62728,color:#fff
+    classDef helm fill:#9467bd,color:#fff
+    classDef ci fill:#7f7f7f,color:#fff
+    classDef tool fill:#aaaaaa,color:#000
+```
+
+## Current Limitations
+
+The platform has significantly evolved beyond the original standalone ETL implementation, but several limitations still exist.
+
+Current limitations include:
+
+- Single-region PostgreSQL deployment
+- Single-node Kubernetes validation only
+- No centralized logging stack
+- No Prometheus metrics integration
+- No Grafana dashboards
+- No distributed tracing
 - No connection pooling
+- No horizontal scaling strategy for PostgreSQL
+- No production ingress controller
+- Local container registry dependency for Kubernetes image distribution
+- Limited retry/backoff tuning for external API failures
+- No advanced workload autoscaling
+- No high-availability PostgreSQL configuration
+- No centralized secret management solution
+- No production-grade backup and disaster recovery workflows
 
 ## Possible Future Enhancements
 
-- Multi-location ingestion
-- Scheduled pipeline execution (cron / scheduler)
-- Retry and backoff for API calls
-- Structured logging (JSON logs)
-- Modular architecture (api, db, config layers)
-- API layer for querying data
+### Data and Pipeline Enhancements
+
+- Multi-location ingestion support
+- Historical weather ingestion workflows
+- Batch ingestion pipelines
+- Incremental ingestion optimization
+- Data retention and archival policies
+- Data partitioning strategies for scale
+
+### Platform and Kubernetes Enhancements
+
+- Horizontal workload scaling
+- Production-grade ingress controller support
+- Kubernetes autoscaling
+- Multi-environment deployment promotion workflows
+- External container registry integration
+- High-availability PostgreSQL deployment
+- Advanced Helm deployment validation
+
+### Observability and Monitoring Enhancements
+
+- Prometheus metrics integration
+- Grafana dashboard visualization
+- OpenTelemetry instrumentation
+- Distributed tracing
+- Structured JSON logging
+- Centralized log aggregation
+- Alerting and operational diagnostics
+
+### Application and API Enhancements
+
+- REST API for querying weather data
+- Authentication and authorization
+- API rate limiting
+- Query filtering and aggregation endpoints
+- Swagger/OpenAPI documentation
+- Background worker orchestration
+
+### Operational and DevOps Enhancements
+
+- Automated backup and restore workflows
+- Disaster recovery procedures
+- GitOps deployment workflows
+- Advanced CI/CD deployment pipelines
+- Security scanning and policy enforcement
+- Infrastructure-as-Code integration

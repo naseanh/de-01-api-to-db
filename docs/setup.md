@@ -163,6 +163,63 @@ docker ps -a
 docker rm -f pipeline_postgres
 ```
 
+## Docker Compose Runtime
+
+Start the full ETL stack:
+
+```bash
+docker compose up --build
+```
+
+Validate containers:
+
+```bash
+docker compose ps
+```
+
+Stop runtime:
+
+```bash
+docker compose down
+```
+
+## Kubernetes Runtime
+
+Apply Kubernetes manifests:
+
+```bash
+kubectl apply -f k8s/
+```
+
+Validate resources:
+
+```bash
+kubectl get all -n data-pipelines
+```
+
+Inspect logs:
+
+```bash
+kubectl logs -n data-pipelines -l app=weather-etl
+```
+
+## Helm Deployment
+
+Install Helm release:
+
+```bash
+helm upgrade --install weather-etl helm/weather-etl \
+  --namespace data-pipelines \
+  --create-namespace \
+  --wait
+```
+
+Validate release:
+
+```bash
+helm status weather-etl -n data-pipelines
+```
+
 For additional issues, see:
 [Full Troubleshooting Guide](troubleshooting.md)
 
