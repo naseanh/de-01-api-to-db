@@ -172,24 +172,24 @@ flowchart TD
 ```mermaid
 %%{init: {'theme': 'base'}}%%
 flowchart LR
-    A[GitHub Actions CI]:::ci --> B[Helm Chart]:::helm
+    A[GitHub Actions CI]:::ci -->|Deploy Package| B[Helm Chart]:::helm
 
-    B --> C[PostgreSQL Deployment]:::db
-    B --> D[ETL Job]:::job
-    B --> E[ETL CronJob]:::cron
+    B -->|Templates| C[PostgreSQL Deployment]:::db
+    B -->|Templates| D[ETL Job]:::job
+    B -->|Templates| E[ETL CronJob]:::cron
 
-    C --> F[(PersistentVolumeClaim)]:::storage
-    C --> G[PostgreSQL Service]:::network
+    C -->|Persistent Storage| F[(PersistentVolumeClaim)]:::storage
+    C -->|Cluster DNS| G[PostgreSQL Service]:::network
 
     D -->|postgres:5432| G
     E -->|postgres:5432| G
 
-    H[Open-Meteo API]:::api --> D
-    H --> E
+    H[Open-Meteo API]:::api -->|Weather JSON| D
+    H -->|Scheduled Ingestion| E
 
-    I[kubectl]:::tool -.-> C
-    I -.-> D
-    I -.-> E
+    I[kubectl]:::tool -.->|Operations| C
+    I -.->|Logs / Debugging| D
+    I -.->|Scheduling Validation| E
 
     classDef api fill:#1f77b4,color:#fff
     classDef db fill:#2ca02c,color:#fff
@@ -200,6 +200,24 @@ flowchart LR
     classDef helm fill:#9467bd,color:#fff
     classDef ci fill:#7f7f7f,color:#fff
     classDef tool fill:#aaaaaa,color:#000
+
+    linkStyle 0 stroke:#9467bd,stroke-width:3px
+    linkStyle 1 stroke:#9467bd,stroke-width:2px
+    linkStyle 2 stroke:#9467bd,stroke-width:2px
+    linkStyle 3 stroke:#9467bd,stroke-width:2px
+
+    linkStyle 4 stroke:#8c564b,stroke-width:2px
+    linkStyle 5 stroke:#17becf,stroke-width:2px
+
+    linkStyle 6 stroke:#2ca02c,stroke-width:3px
+    linkStyle 7 stroke:#d62728,stroke-width:3px
+
+    linkStyle 8 stroke:#1f77b4,stroke-width:2px
+    linkStyle 9 stroke:#1f77b4,stroke-width:2px
+
+    linkStyle 10 stroke:#aaaaaa,stroke-width:2px,stroke-dasharray: 5 5
+    linkStyle 11 stroke:#aaaaaa,stroke-width:2px,stroke-dasharray: 5 5
+    linkStyle 12 stroke:#aaaaaa,stroke-width:2px,stroke-dasharray: 5 5
 ```
 
 ## Current Limitations
