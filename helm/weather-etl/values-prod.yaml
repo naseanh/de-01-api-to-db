@@ -1,0 +1,18 @@
+image:
+  repository: replace-with-registry/weather-etl
+  tag: replace-with-version
+  pullPolicy: IfNotPresent
+
+postgres:
+  storage:
+    size: 5Gi
+
+etl:
+  cronjob:
+    enabled: true
+    schedule: "0 * * * *"
+
+weather:
+  location: "Baltimore, MD"
+  latitude: "39.2904"
+  longitude: "-76.6122"

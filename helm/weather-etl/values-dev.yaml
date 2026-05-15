@@ -1,0 +1,18 @@
+image:
+  repository: localhost:5000/weather-etl
+  tag: local
+  pullPolicy: IfNotPresent
+
+postgres:
+  storage:
+    size: 1Gi
+
+etl:
+  cronjob:
+    enabled: true
+    schedule: "*/15 * * * *"
+
+weather:
+  location: "Baltimore, MD"
+  latitude: "39.2904"
+  longitude: "-76.6122"
