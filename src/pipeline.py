@@ -229,6 +229,12 @@ def load(record):
             # Missing commits are a silent failure.
             # conn.rollback()
 
+            logger.info(
+                "Inserted weather observation for %s at %s",
+                record["location"],
+                record["observed_at"],
+            )
+
 
 # =========================
 # PIPELINE ORCHESTRATION
@@ -240,20 +246,33 @@ def run_pipeline():
     Raises:
         Exception: Re-raises any failure after logging pipeline context.
     """
-    logger.info("Pipeline started.")
+    logger.info("Starting ETL Pipeline...")
+    pipeline_start_time = time.time()
 
     try:
-        raw_data = extract()
+        extract_start = time.time()
+        weather_data = extract()
+        extract_duration = time.time() - extract_start
+        logger.info(
+            "Extract stage completed in %.2f seconds",
+            extract_duration,
+        )
         logger.info(
             "Data extracted from API. Location: %s | "
             "Temp: %s C | Wind: %s km/h | Observed: %s",
-            raw_data["latitude"],
-            raw_data["current_weather"]["temperature"],
-            raw_data["current_weather"]["windspeed"],
-            raw_data["current_weather"]["time"],
+            weather_data["latitude"],
+            weather_data["current_weather"]["temperature"],
+            weather_data["current_weather"]["windspeed"],
+            weather_data["current_weather"]["time"],
         )
 
-        clean = transform(raw_data)
+        transform_start = time.time()
+        clean = transform(weather_data)
+        transform_duration = time.time() - transform_start
+        logger.info(
+            "Transform stage completed in %.2f seconds",
+            transform_duration,
+        )
         logger.info(
             "Data transformed. Location: %s | "
             "Temp: %s C / %s F | "
@@ -267,7 +286,13 @@ def run_pipeline():
             clean["observed_at"],
         )
 
+        load_start = time.time()
         load(clean)
+        load_duration = time.time() - load_start
+        logger.info(
+        "Load stage completed in %.2f seconds",
+            load_duration,
+        )
         logger.info(
             "Data loaded into PostgreSQL. Location: %s | "
             "Temp: %s C / %s F | "
@@ -294,8 +319,11 @@ def run_pipeline():
             clean["observed_at"],
         )
 
-        print("STDOUT TEST: ETL pipeline completed successfully.", flush=True)
-        logger.info("ETL pipeline completed successfully.")
+        total_duration = time.time() - pipeline_start_time
+        logger.info(
+            "ETL pipeline completed successfully in %.2f seconds.",
+            total_duration,
+        )
 
     except Exception as exc:
         logger.exception("Pipeline failed with error: %s", exc)
