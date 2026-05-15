@@ -78,6 +78,25 @@ Default endpoint:
 http://localhost:8000/metrics
 ```
 
+## Kubernetes Metrics Server Deployment
+
+The metrics endpoint can run inside Kubernetes as a separate deployment.
+
+Apply the metrics server manifests:
+
+```bash
+kubectl apply -f k8s/metrics-server-deployment.yaml
+kubectl apply -f k8s/metrics-server-service.yaml
+```
+
+## Kubernetes Metrics Endpoint Validation
+
+Validate the metrics server pod:
+
+```bash
+kubectl get pods -n data-pipelines -l app=metrics-server
+```
+
 ## Local Log Validation
 
 Run:

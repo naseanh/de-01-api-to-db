@@ -21,7 +21,7 @@ spec:
       containers:
         - name: metrics-server
 
-          image: localhost:5000/weather-etl:local
+          image: localhost:5000/weather-etl:metrics-v1
 
           imagePullPolicy: IfNotPresent
 
