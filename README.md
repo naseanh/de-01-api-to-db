@@ -373,6 +373,7 @@ The project now supports:
 - Dockerized PostgreSQL execution
 - Fully containerized ETL runtime using Docker Compose
 - Automated testing with pytest
+- Static analysis with pylint
 - CI/CD validation with GitHub Actions
 - Runtime configuration externalization using `.env`
 - PostgreSQL healthchecks and startup readiness
@@ -380,21 +381,128 @@ The project now supports:
 - Kubernetes-native PostgreSQL deployment
 - Kubernetes Services and cluster DNS
 - Kubernetes ConfigMaps and Secrets
-- Kubernetes PersistentVolumeClaims
+- Kubernetes PersistentVolumeClaims (PVCs)
 - Kubernetes Job-based ETL execution
+- Kubernetes CronJob-based scheduled ETL execution
+- Kubernetes resource requests and limits
 - Kubernetes operational workflows using `kubectl`
 - Local Kubernetes platform deployment validation
-
-### Next Phase — Helm and Kubernetes Packaging
-
-Phase 5 will focus on improving Kubernetes deployment portability and operational maturity.
-
-Planned Phase 5 enhancements include:
-
-- Helm chart packaging
+- Helm chart packaging and templating
 - Helm values-based configuration
-- Kubernetes CronJobs
-- Environment-specific deployment profiles
+- Helm environment deployment profiles
+- Helm operational runbooks
+- Helm release lifecycle management
+- Helm deployment automation using Makefiles
+- Helm chart validation within GitHub Actions
+
+---
+
+### Platform Tooling and Package Management Overview
+
+| Platform / Ecosystem | Primary Tool | Purpose |
+| --- | --- | --- |
+| Python | `pip` | Python package and dependency management |
+| Python Virtual Environments | `venv` | Isolated Python runtime environments |
+| Docker | `docker` | Container runtime and image management |
+| Docker Compose | `docker compose` | Multi-container local orchestration |
+| Kubernetes | `kubectl` | Kubernetes cluster operations and management |
+| Kubernetes Packaging | `helm` | Kubernetes application packaging and deployment |
+| CI/CD | GitHub Actions | Automated validation and deployment workflows |
+| PostgreSQL | `psql` | PostgreSQL database administration and querying |
+| Static Analysis | `pylint` | Python code quality and linting |
+| Testing | `pytest` | Python automated testing framework |
+| Build Automation | `make` / `Makefile` | Operational workflow automation |
+| Container Registry | Local Docker Registry | Kubernetes image distribution |
+| Version Control | `git` | Source control and collaboration |
+| Git Hosting | GitHub | Repository hosting and CI integration |
+
+---
+
+### Platform Evolution Diagram
+
+```mermaid
+%%{init: {'theme': 'base'}}%%
+flowchart LR
+    A[Python ETL<br/>Phase 1]:::python --> B[Testing + CI/CD<br/>Phase 2]:::ci
+    B --> C[Docker Compose Runtime<br/>Phase 3]:::docker
+    C --> D[Kubernetes Job Runtime<br/>Phase 4]:::k8s
+    D --> E[Helm Packaging + CronJobs<br/>Phase 5]:::helm
+    E -.-> F[Observability + Monitoring<br/>Phase 6]:::observe
+    A1[pip / venv / psycopg2]:::tool --> A
+    B1[pytest / pylint / GitHub Actions]:::tool --> B
+    C1[Dockerfile / docker compose / .env]:::tool --> C
+    D1[kubectl / ConfigMaps / Secrets / PVCs]:::tool --> D
+    E1[Helm / values.yaml / Makefile]:::tool --> E
+    F1[Prometheus / Grafana / OpenTelemetry]:::tool --> F
+
+    classDef python fill:#ff7f0e,color:#000
+    classDef ci fill:#9467bd,color:#fff
+    classDef docker fill:#1f77b4,color:#fff
+    classDef k8s fill:#2ca02c,color:#fff
+    classDef helm fill:#17becf,color:#000
+    classDef observe fill:#d62728,color:#fff
+    classDef tool fill:#7f7f7f,color:#fff
+
+    linkStyle 0 stroke:#9467bd,stroke-width:2px
+    linkStyle 1 stroke:#1f77b4,stroke-width:2px
+    linkStyle 2 stroke:#2ca02c,stroke-width:2px
+    linkStyle 3 stroke:#17becf,stroke-width:2px
+    linkStyle 4 stroke:#d62728,stroke-width:2px,stroke-dasharray: 5 5
+    linkStyle 5 stroke:#7f7f7f,stroke-width:1.5px,stroke-dasharray: 4 4
+    linkStyle 6 stroke:#7f7f7f,stroke-width:1.5px,stroke-dasharray: 4 4
+    linkStyle 7 stroke:#7f7f7f,stroke-width:1.5px,stroke-dasharray: 4 4
+    linkStyle 8 stroke:#7f7f7f,stroke-width:1.5px,stroke-dasharray: 4 4
+    linkStyle 9 stroke:#7f7f7f,stroke-width:1.5px,stroke-dasharray: 4 4
+```
+
+---
+
+### Phase 5 — Helm Packaging and Kubernetes Operational Maturity
+
+Phase 5 focuses on Kubernetes deployment portability, reusable infrastructure packaging, and operational automation.
+
+Current Phase 5 capabilities include:
+
+- Helm chart scaffold and deployment packaging
+- Helm templating for PostgreSQL and ETL workloads
+- Helm values-based runtime configuration
+- Environment-specific values profiles
+- Kubernetes CronJob support for scheduled ETL execution
+- Kubernetes resource governance using requests and limits
+- Helm deployment automation via Makefile targets
+- Helm operational runbooks and troubleshooting workflows
+- Helm NOTES.txt operational guidance
+- GitHub Actions Helm validation and rendering tests
+
+Planned upcoming enhancements include:
+
 - Kubernetes observability foundations
 - Metrics and monitoring integration
-- Improved deployment automation
+- Helm test hooks
+- Advanced deployment validation workflows
+- Kubernetes scaling and resiliency concepts
+- Production-grade container registry workflows
+- Centralized logging and telemetry integration
+
+---
+
+### Next Phase — Observability and Platform Monitoring
+
+Phase 6 will focus on observability, telemetry, monitoring, and production-grade operational visibility across the ETL platform.
+
+Planned Phase 6 enhancements include:
+
+- Prometheus metrics integration
+- Grafana dashboards and visualization
+- Kubernetes metrics collection
+- Application-level telemetry instrumentation
+- Structured logging improvements
+- Centralized logging workflows
+- OpenTelemetry (OTel) foundations
+- Kubernetes health and performance monitoring
+- Alerting and operational diagnostics
+- Resource utilization analysis
+- Platform troubleshooting dashboards
+- Observability-focused CI/CD validation
+- Production-style monitoring architecture
+- Metrics-driven operational analysis
