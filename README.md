@@ -503,3 +503,9 @@ Planned Phase 6 enhancements include:
 - Observability-focused CI/CD validation
 - Production-style monitoring architecture
 - Metrics-driven operational analysis
+
+## Operational Scripts
+
+| Script | Purpose |
+| --- | --- |
+| `scripts/git/cleanup-branches.sh` | Cleans merged local and remote Git branches |
