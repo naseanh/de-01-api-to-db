@@ -49,6 +49,9 @@ spec:
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
               imagePullPolicy: {{ .Values.image.pullPolicy }}
 
+              resources:
+                {{- toYaml .Values.etl.resources | nindent 16 }}
+
               env:
                 - name: DB_HOST
                   value: postgres
