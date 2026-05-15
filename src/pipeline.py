@@ -30,8 +30,8 @@ import sys
 import psycopg2
 import requests
 from dotenv import load_dotenv
-from src.metrics import metrics
-from src.metrics import get_metrics_snapshot
+from src.metrics import metrics, get_metrics_snapshot
+from src.metrics_exporter import generate_prometheus_metrics
 
 logging.basicConfig(
     level=logging.INFO,
@@ -341,6 +341,10 @@ def run_pipeline():
         logger.info(
             "Metrics snapshot: %s",
             get_metrics_snapshot(),
+        )
+        logger.info(
+            "Prometheus metrics:\n%s",
+            generate_prometheus_metrics(),
         )
 
     except Exception as exc:
