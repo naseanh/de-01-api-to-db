@@ -89,6 +89,54 @@ kubectl apply -f k8s/metrics-server-deployment.yaml
 kubectl apply -f k8s/metrics-server-service.yaml
 ```
 
+## Helm-Managed Metrics Server
+
+The metrics server can also be deployed through the Helm chart.
+
+Deploy or upgrade the Helm release:
+
+```bash
+helm upgrade --install weather-etl helm/weather-etl \
+  --namespace data-pipelines \
+  --create-namespace \
+  --wait
+```
+
+Validate the Helm-managed metrics server resources:
+
+```bash
+kubectl get deploy,svc,pods -n data-pipelines -l app=metrics-server
+```
+
+Inspect metrics server logs:
+
+```bash
+kubectl logs -n data-pipelines -l app=metrics-server
+```
+
+Forward the metrics service locally:
+
+```bash
+kubectl port-forward svc/metrics-server 8000:8000 -n data-pipelines
+```
+
+Validate metrics exposure:
+
+```bash
+curl localhost:8000/metrics
+```
+
+Expected output:
+
+```text
+etl_total_runs
+etl_successful_runs
+etl_failed_runs
+etl_last_total_duration_seconds
+```
+
+This Helm integration allows observability workloads to be packaged, versioned, and deployed consistently alongside the ETL platform.
+
 ## Kubernetes Metrics Endpoint Validation
 
 Validate the metrics server pod:
