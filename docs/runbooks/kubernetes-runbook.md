@@ -15,14 +15,11 @@ docker build -t localhost:5000/weather-etl:local .
 ## Apply Manifests
 
 ```bash
-kubectl apply -f k8s/namespace.yaml
-kubectl apply -f k8s/postgres-configmap.yaml
-kubectl apply -f k8s/postgres-secret.yaml
-kubectl apply -f k8s/postgres-pvc.yaml
-kubectl apply -f k8s/postgres-init-configmap.yaml
-kubectl apply -f k8s/postgres-deployment.yaml
-kubectl apply -f k8s/postgres-service.yaml
-kubectl apply -f k8s/etl-job.yaml
+kubectl apply -f k8s/namespaces/
+kubectl apply -f k8s/postgres/
+kubectl apply -f k8s/etl/
+kubectl apply -f k8s/metrics/
+kubectl apply -f k8s/observability
 ```
 
 ## Check Resources

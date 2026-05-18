@@ -85,8 +85,7 @@ The metrics endpoint can run inside Kubernetes as a separate deployment.
 Apply the metrics server manifests:
 
 ```bash
-kubectl apply -f k8s/metrics-server-deployment.yaml
-kubectl apply -f k8s/metrics-server-service.yaml
+kubectl apply -f k8s/metrics/
 ```
 
 ## Helm-Managed Metrics Server
@@ -143,6 +142,14 @@ Validate the metrics server pod:
 
 ```bash
 kubectl get pods -n data-pipelines -l app=metrics-server
+```
+
+## Prometheus Deployment
+
+Apply Prometheus manifests:
+
+```bash
+kubectl apply -f k8s/observability/
 ```
 
 ## Local Log Validation
