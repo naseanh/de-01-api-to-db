@@ -159,3 +159,23 @@ Run:
 ```bash
 python -m src.pipeline
 ```
+
+## Current Metrics Limitation
+
+The metrics server currently exposes in-memory metrics from the metrics-server process.
+
+ETL Jobs run in separate short-lived Pods, so Job-level in-memory counters do not persist into the metrics-server process.
+
+Current behavior:
+
+- Prometheus can scrape the metrics endpoint
+- Metrics endpoint returns valid Prometheus-formatted metrics
+- Counters may remain at zero unless the metrics server process itself updates them
+
+Future improvements may include:
+
+- shared metrics persistence
+- PostgreSQL-backed metrics aggregation
+- Pushgateway-style metrics collection
+- OpenTelemetry Collector integration
+- Prometheus Pushgateway integration
