@@ -422,7 +422,7 @@ psql -h localhost -p 5433 -U pipeline_user -d pipeline_db
 
 - Kubernetes cannot find the image locally
 - `imagePullPolicy: Never` prevents pulling from a registry
-- The image name in `k8s/etl-job.yaml` does not match the locally built image
+- The image name in `k8s/etl/etl-job.yaml` does not match the locally built image
 
 **Fix**:
 
@@ -452,7 +452,7 @@ If issues persist:
 
 ```bash
 kubectl delete job weather-etl-job -n data-pipelines
-kubectl apply -f k8s/etl-job.yaml
+kubectl apply -f k8s/etl/etl-job.yaml
 ```
 
 ### Issue: Kubernetes Job completed but logs are hard to find
@@ -482,7 +482,11 @@ Delete and recreate the namespace or PVC:
 
 ```bash
 kubectl delete namespace data-pipelines
-kubectl apply -f k8s/
+kubectl apply -f k8s/namespaces/
+kubectl apply -f k8s/postgres/
+kubectl apply -f k8s/etl/
+kubectl apply -f k8s/metrics/
+kubectl apply -f k8s/observability/
 ```
 
 ### Issue: PostgreSQL Pod is running but ETL Job cannot connect

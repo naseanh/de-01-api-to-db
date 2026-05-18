@@ -1,4 +1,32 @@
-.PHONY: test lint compose-up compose-down compose-reset
+.PHONY: \
+	test \
+	lint \
+	compose-up \
+	compose-down \
+	compose-reset \
+	k8s-apply \
+	k8s-postgres \
+	k8s-etl \
+	k8s-metrics \
+	k8s-observability \
+	k8s-status \
+	k8s-logs \
+	k8s-metrics-logs \
+	k8s-prometheus-logs \
+	k8s-clean \
+	helm-lint \
+	helm-template \
+	helm-install \
+	helm-upgrade \
+	helm-uninstall \
+	helm-status \
+	helm-history \
+	helm-rollback
+
+
+# =========================================================
+# Local Validation
+# =========================================================
 
 test:
 	pytest
@@ -6,6 +34,11 @@ test:
 lint:
 	pylint src utils
 	pylint tests --disable=duplicate-code
+
+
+# =========================================================
+# Docker Compose
+# =========================================================
 
 compose-up:
 	docker compose up --build
@@ -17,19 +50,50 @@ compose-reset:
 	docker compose down -v
 	docker compose up --build
 
+
+# =========================================================
+# Kubernetes
+# =========================================================
+
 k8s-apply:
-	kubectl apply -f k8s/
+	kubectl apply -f k8s/namespaces/
+	kubectl apply -f k8s/postgres/
+	kubectl apply -f k8s/etl/
+	kubectl apply -f k8s/metrics/
+	kubectl apply -f k8s/observability/
+
+k8s-postgres:
+	kubectl apply -f k8s/postgres/
+
+k8s-etl:
+	kubectl apply -f k8s/etl/
+
+k8s-metrics:
+	kubectl apply -f k8s/metrics/
+
+k8s-observability:
+	kubectl apply -f k8s/observability/
 
 k8s-status:
-	kubectl get all -n data-pipelines
+	kubectl get all -A
 
 k8s-logs:
 	kubectl logs -n data-pipelines -l app=weather-etl
 
+k8s-metrics-logs:
+	kubectl logs -n data-pipelines -l app=metrics-server
+
+k8s-prometheus-logs:
+	kubectl logs -n observability -l app=prometheus
+
 k8s-clean:
 	kubectl delete namespace data-pipelines
+	kubectl delete namespace observability
 
-.PHONY: helm-lint helm-template helm-install helm-upgrade helm-uninstall helm-status helm-history helm-rollback
+
+# =========================================================
+# Helm
+# =========================================================
 
 helm-lint:
 	helm lint helm/weather-etl

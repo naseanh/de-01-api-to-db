@@ -188,7 +188,11 @@ docker compose down
 Apply Kubernetes manifests:
 
 ```bash
-kubectl apply -f k8s/
+kubectl apply -f k8s/namespaces/
+kubectl apply -f k8s/postgres/
+kubectl apply -f k8s/etl/
+kubectl apply -f k8s/metrics/
+kubectl apply -f k8s/observability/
 ```
 
 Validate resources:
