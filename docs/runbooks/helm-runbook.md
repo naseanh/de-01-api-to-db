@@ -11,3 +11,11 @@ Build the ETL image locally before deployment.
 ```bash
 docker build -t localhost:5000/weather-etl:local .
 ```
+
+## Metrics Server Validation
+
+Validate the Helm-managed metrics server:
+
+```bash
+kubectl get deploy,svc,pods -n data-pipelines -l app=metrics-server
+```
