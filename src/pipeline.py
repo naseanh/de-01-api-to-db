@@ -32,6 +32,7 @@ import requests
 from dotenv import load_dotenv
 from src.metrics import metrics, get_metrics_snapshot
 from src.metrics_exporter import generate_prometheus_metrics
+from src.pushgateway import push_metrics
 
 logging.basicConfig(
     level=logging.INFO,
@@ -346,18 +347,31 @@ def run_pipeline():
             "Prometheus metrics:\n%s",
             generate_prometheus_metrics(),
         )
+        try:
+            push_metrics()
+            logger.info("Metrics pushed to Pushgateway.")
+        except requests.RequestException as exc:
+            logger.warning("Failed to push metrics to Pushgateway: %s", exc)
 
-    except Exception as exc:
+    except (psycopg2.Error, requests.RequestException, ValueError, KeyError) as exc:
         total_duration = time.time() - pipeline_start_time
         metrics.last_total_duration_seconds = total_duration
         metrics.failed_runs += 1
         logger.info(
             "Pipeline metrics | total_runs=%s successful_runs=%s failed_runs=%s",
-            metrics.total_runs,
-            metrics.successful_runs,
-            metrics.failed_runs,
+            *(
+                metrics.total_runs,
+                metrics.successful_runs,
+                metrics.failed_runs,
+            ),
         )
         logger.exception("Pipeline failed with error: %s", exc)
+
+        try:
+            push_metrics(job_name="weather-etl-failed")
+            logger.info("Metrics pushed to Pushgateway for failed run.")
+        except requests.RequestException as push_exc:
+            logger.warning("Failed to push metrics to Pushgateway for failed run: %s", push_exc)
         raise
 
 

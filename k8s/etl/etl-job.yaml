@@ -17,7 +17,7 @@ spec:
       containers:
         - name: weather-etl
 
-          image: localhost:5000/weather-etl:local
+          image: localhost:5000/weather-etl:local-v2
 
           imagePullPolicy: IfNotPresent
 

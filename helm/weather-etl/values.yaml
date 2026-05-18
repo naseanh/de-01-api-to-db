@@ -3,7 +3,7 @@ namespace:
 
 image:
   repository: localhost:5000/weather-etl
-  tag: local
+  tag: metrics-v5
   pullPolicy: IfNotPresent
 
 postgres:

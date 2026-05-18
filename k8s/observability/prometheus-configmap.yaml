@@ -18,3 +18,9 @@ data:
         static_configs:
           - targets:
               - metrics-server.data-pipelines.svc.cluster.local:8000
+
+      - job_name: "pushgateway"
+
+        static_configs:
+          - targets:
+              - pushgateway.observability.svc.cluster.local:9091
